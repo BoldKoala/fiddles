@@ -6,6 +6,20 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 
 document.body.appendChild( renderer.domElement );
 
+// ======>> For MouseMoveEvent===============
+var mouseX = 0, mouseY = 0;
+
+var windowHalfX = window.innerWidth / 2;
+var windowHalfY = window.innerHeight / 2;
+
+
+function onDocumentMouseMove( event ){
+    mouseX = ( event.clientX - windowHalfX ) / 2;
+    mouseY = ( event.clientY - windowHalfY ) / 2;
+}
+document.addEventListener('mousemove', onDocumentMouseMove, false); 
+
+// ======>> For MouseMoveEvent===============
 
 
 // ======>> Plane building
@@ -135,49 +149,28 @@ function render() {
     bullet2.position.x -= 0.12;
   }
 
-  // camera.rotation.x += 90* Math.PI/180;
-  camera.position.z = Math.cos(timer) * 10;
-  camera.position.x = Math.sin(timer) * 10;
-  directionalLight.position.set(-camera.position.x, camera.position.y, camera.position.z);
+  // camera.position.z = Math.cos(timer) * 10;
   // camera.position.x = Math.sin(timer) * 10;
-  // camera.position.y = Math.cos(timer) * -10;
-  // camera.lookAt({x: 0, y: 0, z: 0})
+  directionalLight.position.set(-camera.position.x, camera.position.y, camera.position.z);
+
+
+  camera.position.x += ( mouseX - camera.position.x ) * 0.002;
+  camera.position.y += ( mouseY - camera.position.y ) * 0.002;
+
   camera.lookAt(scene.position)
-  // camera.quaternion.x = 0.2
-  // camera.quaternion.y = 0
-  // camera.quaternion.z = Math.cos(-timer);
-  // camera.quaternion.y = Math.sin(-timer)
-  // camera.quaternion.x = Math.cos(timer)
-  // camera.quaternion.w = 0.9238795292366129
-  // camera.quaternion.w = Math.sin(timer)
-  // console.log(camera.quaternion)
-
-
   renderer.render( scene, camera );
 }
 render();
 // ======>> End of render and animation
 
-// setInterval(function(){
-//   cube.position.x += 0.02;
-//   bullet.position.y += 0.1;
-// }, 10)
-
-// setInterval(function(){
-//   cube.position.x = -6;
-// }, 7000)
 
 
-// setInterval(function(){
-//   bullet.position.y = 0;
-//   bullet.position.x = cube.position.x;
-//   bullet2.position.x = cube.position.x;
-// }, 1000)
 
-// setInterval(function(){
-//   cube.position.x += 0.02;
-//   bullet.position.y += 0.1;
-// }, 10)
+
+
+
+
+
 
 
 
