@@ -1,5 +1,6 @@
 var map = Map(30,30,3,3);
 var tank = Tank(1,1,1, 'blue', 1);
+var tankRed = Tank(1,1,1, 'red', 1);
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 var renderer = new THREE.WebGLRenderer();
 var WIDTH = window.innerWidth;
@@ -7,9 +8,10 @@ var HEIGHT = window.innerHeight;
 
 //Add tank to map
 map.scene.add( tank.tanker );
+map.scene.add( tankRed.tanker );
 
 //Initialize Camera position
-camera.position.y = 5;
+camera.position.y = 40;
 camera.position.z = 0;
 //Set renderer size
 renderer.setSize( WIDTH, HEIGHT );
@@ -20,6 +22,12 @@ document.body.appendChild( renderer.domElement );
 //Add event handler
 window.onkeypress = function(d){
   console.log(d.keyCode);
+  if (d.keyCode === 32){
+console.log(tank.tanker.position)
+    var bullet = Bullet(1, 1, 1, tank.tanker.position);
+    map.scene.add(bullet.bulleter);
+    bullet.fire();
+  }
   if(d.keyCode === 119){
     tank.tanker.position.z -= tank.speed;
     camera.position.z -= tank.speed;
