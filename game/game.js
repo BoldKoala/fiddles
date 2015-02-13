@@ -1,4 +1,4 @@
-var map = Map(30,30,3,3);
+var map = Map(70,70,3,3);
 var tank = Tank(1,1,1, 'blue', 0.1);
 var tankRed = Tank(1,1,1, 'red', 0.1);
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
