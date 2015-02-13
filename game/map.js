@@ -19,7 +19,7 @@ function Map(x, y, step, brightness) {
 	// ====== Floor building ========
 	map.floor = new THREE.Mesh(new THREE.PlaneGeometry(map.x,map.y), map.material.floor);
 	map.floor.rotation.x = -Math.PI/2;
-	// map.scene.add(map.floor);
+	map.scene.add(map.floor);
 
 	// ======>> Add light source
 	map.light = new THREE.DirectionalLight(0xffffff,map.brightness);
@@ -34,7 +34,7 @@ function Map(x, y, step, brightness) {
 	  map.line.vertices.push(new THREE.Vector3( map.x, -0.05, i ));
 	  map.line.vertices.push(new THREE.Vector3( i, -0.05, -map.x ));
 	  map.line.vertices.push(new THREE.Vector3( i, -0.05, map.x ));
-		map.scene.add(new THREE.Line( map.line, map.material.line, THREE.LinePieces));
+		// map.scene.add(new THREE.Line( map.line, map.material.line, THREE.LinePieces));
 	}
 
 	return map;
