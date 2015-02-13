@@ -16,6 +16,8 @@ var windowHalfY = window.innerHeight / 2;
 function onDocumentMouseMove( event ){
     mouseX = ( event.clientX - windowHalfX ) / 2;
     mouseY = ( event.clientY - windowHalfY ) / 2;
+    // mouseX = event.clientX;
+    // mouseY = event.clientY;
 }
 document.addEventListener('mousemove', onDocumentMouseMove, false); 
 
@@ -76,7 +78,7 @@ var bullet2 = new THREE.Mesh( geometry2, material );
 
 // ======>> Modifing positions
 
-cube.position.x = 7;
+cube.position.x = 12;
 // cube.position.y = -3;
 // bullet.position.x = 7;
 // bullet2.position.x = 7;
@@ -153,16 +155,16 @@ function render() {
   // camera.position.z = Math.cos(timer) * 10;
   // camera.position.x = Math.sin(timer) * 10;
   directionalLight.position.set(-camera.position.x, camera.position.y, camera.position.z);
-  camera.position.x = cube.position.x - 2;
+  camera.position.x = cube.position.x;
   camera.position.y = cube.position.y + 3;
-  camera.position.z = cube.position.z - 2;
+  camera.position.z = cube.position.z;
 
   // camera.rotation.x += ( mouseX - camera.position.x ) * 0.002;
   // camera.rotation.y += ( mouseY - camera.position.y ) * 0.002;
 
   // camera.lookAt(scene.position)
   // camera.lookAt({x: cube.position.x - 10, y: cube.position.y + 5, z: cube.position.z})
-  camera.lookAt({x: cube.position.x - 10, y: cube.position.y + 5, z: cube.position.z})
+  camera.lookAt({x: mouseY, y: cube.position.y + 2, z: mouseX})
   renderer.render( scene, camera );
 }
 render();
