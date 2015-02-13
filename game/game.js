@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 var map = Map(300,300,3,3);
 var tank = Tank(10,10,10, 'blue', 1);
+=======
+var map = Map(30,30,3,3);
+var tank = Tank(1,1,1, 'blue', 1);
+var tankRed = Tank(1,1,1, 'red', 1);
+>>>>>>> 816848c3323f4b822ea5a17e504124b9863008fe
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 var renderer = new THREE.WebGLRenderer();
 var WIDTH = window.innerWidth;
@@ -7,9 +13,14 @@ var HEIGHT = window.innerHeight;
 
 //Add tank to map
 map.scene.add( tank.tanker );
+map.scene.add( tankRed.tanker );
 
 //Initialize Camera position
+<<<<<<< HEAD
 camera.position.y = 300;
+=======
+camera.position.y = 40;
+>>>>>>> 816848c3323f4b822ea5a17e504124b9863008fe
 camera.position.z = 0;
 camera.lookAt({x: 0, y: 0, z: 0});
 //Set renderer size
@@ -37,7 +48,6 @@ window.onkeydown = function(d){
   //W key
   if(d.keyCode === 87){
     speed = -tank.speed;
-  }
   //S key
   if(d.keyCode === 83){
     speed = tank.speed;
@@ -49,6 +59,13 @@ window.onkeydown = function(d){
   //A key
   if(d.keyCode === 65){
     direction -= 0.1;
+  }
+  //space
+  if (d.keyCode === 32){
+    console.log(tank.tanker.position)
+    var bullet = Bullet(1, 1, 1, tank.tanker.position);
+    map.scene.add(bullet.bulleter);
+    bullet.fire();
   }
 }
 window.onkeyup = function(d){
