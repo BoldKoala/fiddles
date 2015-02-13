@@ -31,7 +31,7 @@ var direction = 0;
 
 //Add event handler
 window.onkeydown = function(d){
-  console.log(d.keyCode);
+  // console.log(d.keyCode);
   //W key
   if(d.keyCode === 87){
     speed = -tank.speed;
@@ -50,10 +50,7 @@ window.onkeydown = function(d){
   }
   //space
   if (d.keyCode === 32){
-    console.log(tank.tanker.position)
-    var bullet = Bullet(-Math.sin(direction), -Math.cos(direction), 2, tank.tanker.position);
-    map.scene.add(bullet.bulleter);
-    bullet.fire();
+    tank.fire();
   }
 }
 window.onkeyup = function(d){
@@ -82,6 +79,16 @@ function render() {
   var timer = Date.now() * 0.0005
 
   map.light.position.set(-camera.position.x, camera.position.y, camera.position.z);
+
+  //Bullets movement and collision check
+  for (var i = 0; i < tank.firedBullets.length; i++){
+    if (!tank.firedBullets[i].hit && Math.sqrt(Math.pow((tank.firedBullets[i].bulleter.position.x - tankRed.tanker.position.x), 2) + Math.pow((tank.firedBullets[i].bulleter.position.z - tankRed.tanker.position.z), 2))/10 < 0.05){
+      console.log("You have hit the red Tank!!!!")
+      tank.firedBullets[i].hit = true;
+    } else if (!tank.firedBullets[i].hit){
+      tank.firedBullets[i].move();
+    }
+  }
 
   tank.tanker.position.x += Math.cos(direction)*speed;
   tank.tanker.position.z += Math.sin(direction)*speed;

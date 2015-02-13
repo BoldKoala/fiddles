@@ -1,8 +1,11 @@
-function Bullet(x, y, speed, position) {
+function Bullet(dir1, dir2, speed, position) {
   var bullet = {};
 
   bullet.radius = 0.3;
   bullet.speed = speed;
+  bullet.zSpeed = dir1 * speed;
+  bullet.xSpeed = dir2 * speed;
+  bullet.hit = false;
 
 
   bullet.material = {
@@ -11,25 +14,14 @@ function Bullet(x, y, speed, position) {
   // ======>> Bullet building
   bullet.bulleter = new THREE.Mesh(new THREE.SphereGeometry(bullet.radius), bullet.material.bullet );
 
-  // Position bullet
-  bullet.bulleter.position.x = tank.tanker.position.x;
-  bullet.bulleter.position.y = tank.tanker.position.y;
-  bullet.bulleter.position.z = tank.tanker.position.z;
-
-  bullet.fire = function(){
-    // xSpeed = x * Math.sqrt(speed);
-    // ySpeed = y * Math.sqrt(speed); 
-    xSpeed = x * speed;
-    ySpeed = y * speed;
-
-    setInterval(function(){
-      bullet.bulleter.position.z += xSpeed
-      bullet.bulleter.position.x += ySpeed
-    }, 100)
+  
+  bullet.move = function(){
+    this.bulleter.position.z += this.zSpeed/5
+    this.bulleter.position.x += this.xSpeed/5
   }
 
 
-  // ======>> End of Cube
+  // ======>> End of Bullets
 
   // ======>> Bullets building
   // var geometry2 = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
