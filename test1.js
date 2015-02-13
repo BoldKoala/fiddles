@@ -6,10 +6,10 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 
 document.body.appendChild( renderer.domElement );
 
-
+var WIDTH = 200;
 
 // ======>> Plane building
-var plane = new THREE.Mesh(new THREE.PlaneGeometry(30,30), new THREE.MeshLambertMaterial());
+var plane = new THREE.Mesh(new THREE.PlaneGeometry(WIDTH,WIDTH), new THREE.MeshLambertMaterial());
 scene.add(plane);
 // plane.rotation.x = -1.57;
 plane.rotation.x = -Math.PI/2;
@@ -19,7 +19,7 @@ plane.rotation.x = -Math.PI/2;
 // ======>> Line building
 var geometryLine = new THREE.Geometry();
 var materialLine = new THREE.LineBasicMaterial({color: 'green'});   
-var size = 30, step = 3;
+var size = WIDTH, step = 3;
 
 for ( var i = - size; i <= size; i += step){
     geometryLine.vertices.push(new THREE.Vector3( - size, - 0.05, i ));
@@ -29,7 +29,7 @@ for ( var i = - size; i <= size; i += step){
     geometryLine.vertices.push(new THREE.Vector3( i, - 0.05, size ));
 
 var line = new THREE.Line( geometryLine, materialLine, THREE.LinePieces);
-scene.add(line);
+// scene.add(line);
 }
 // ======>> End of Line
 
@@ -50,9 +50,9 @@ scene.add( cube2 );
 
 // ======>> Bullets building
 var geometry2 = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
-var material2 = new THREE.MeshLambertMaterial( { color: 0x00ff01 } );
+var material2 = new THREE.MeshLambertMaterial( { color: 'red' } );
 var bullet = new THREE.Mesh( geometry2, material );
-var bullet2 = new THREE.Mesh( geometry2, material );
+var bullet2 = new THREE.Mesh( geometry2, material2 );
 // scene.add( bullet )
 // scene.add( bullet2 )
 
@@ -78,18 +78,18 @@ camera.position.z = 8;
 camera.rotation.order = "YXZ";
 
 var firing = false;
-window.onkeydown = function(d){
+window.onkeypress = function(d){
   console.log(d.keyCode);
-  if(d.keyCode === 38){
+  if(d.keyCode === 119){
     cube.position.z--;
   }
-  if(d.keyCode === 40){
+  if(d.keyCode === 115){
     cube.position.z++;
   }
-  if(d.keyCode === 39){
+  if(d.keyCode === 100){
     cube.position.x++;
   }
-  if(d.keyCode === 37){
+  if(d.keyCode === 97){
     cube.position.x--;
   }
   if(d.keyCode === 67){
