@@ -1,4 +1,4 @@
-var map = Map(300,300,10,10);
+var map = Map(30,30,3,3);
 var tank = Tank(1,1,1, 'blue', 1);
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 var renderer = new THREE.WebGLRenderer();
@@ -9,8 +9,8 @@ var HEIGHT = window.innerHeight;
 map.scene.add( tank.tanker );
 
 //Initialize Camera position
-camera.position.y = 3;
-camera.position.z = 8;
+camera.position.y = 5;
+camera.position.z = 0;
 //Set renderer size
 renderer.setSize( WIDTH, HEIGHT );
 
@@ -45,6 +45,8 @@ function render() {
   var timer = Date.now() * 0.0005
 
   map.light.position.set(-camera.position.x, camera.position.y, camera.position.z);
+
+  camera.lookAt(tank.tanker.position);
   renderer.render( map.scene, camera );
 }
 render();
