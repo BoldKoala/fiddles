@@ -7,11 +7,15 @@ function Tank(x,y,z,color,speed) {
 	tank.color = color;
 	tank.speed = speed;
 
+
 	tank.material = {
 		tank: new THREE.MeshLambertMaterial({ color: tank.color })
 	}
 	// ======>> Cube building
 	tank.tanker = new THREE.Mesh(new THREE.BoxGeometry(tank.x, tank.y, tank.z), tank.material.tank );
+
+	// Position Cube
+	tank.tanker.position.y = tank.y/2;
 
 	// ======>> End of Cube
 
