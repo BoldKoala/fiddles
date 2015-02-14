@@ -1,7 +1,7 @@
-var map = Map(30,30,3,5);
+var map = Map(50,50,3,3);
 var tank = Tank(1,1,1, 'blue', 0.1);
 var tankRed = Tank(1,1,1, 'red', 0.1);
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 500 );
 var renderer = new THREE.WebGLRenderer({antialias: true});
 var WIDTH = window.innerWidth;
 var HEIGHT = window.innerHeight;
@@ -57,8 +57,8 @@ map.scene.add( tankRed.tanker );
 
 //Initialize Camera position
 
-camera.position.y = 40;
-camera.position.z = 0; 
+// camera.position.y = 40;
+// camera.position.z = 0; 
 // camera.lookAt({x:0, y:0, z:0});
 
 //Set renderer size
@@ -98,6 +98,22 @@ window.onkeydown = function(d){
     fire = true;
   }
   // isMoving = true;
+
+  //c
+  if(d.keyCode === 67){
+      var counter = 0;
+      setInterval(function(){
+        if (counter < 50){
+          tank.tanker.position.y += 0.06
+          counter++
+        }
+
+        if (counter >= 50 && counter < 100){
+          tank.tanker.position.y -= 0.06
+          counter++
+        }
+      }, 10)
+  }
 }
 window.onkeyup = function(d){
   //W ke
@@ -155,7 +171,7 @@ function render() {
       noFire = false;
     },250)
   }
-  if (Date.now() - timerP > 250){
+  if (Date.now() - timerP >= 250){
     if(!noFire && fire2){
       tankRed.fire(direction2);
       timerP = Date.now();
@@ -188,8 +204,14 @@ function render() {
   }
 
   direction += spin;
-  tank.tanker.position.x += Math.cos(direction)*speed;
-  tank.tanker.position.z += Math.sin(direction)*speed;
+  if (Math.abs(tank.tanker.position.x + Math.cos(direction)*speed) <= map.x/2){
+    tank.tanker.position.x += Math.cos(direction)*speed;
+  }
+  if (Math.abs(tank.tanker.position.z + Math.sin(direction)*speed) <= map.y/2){
+    tank.tanker.position.z += Math.sin(direction)*speed
+  }
+
+  // tank.tanker.position.z += Math.sin(direction)*speed;
   tank.tanker.rotation.y = -direction;
 
   //FPS
