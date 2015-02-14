@@ -5,7 +5,7 @@ var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHe
 var renderer = new THREE.WebGLRenderer({antialias: true});
 var WIDTH = window.innerWidth;
 var HEIGHT = window.innerHeight;
-var socket = io('http://localhost:8080');
+var socket = io();
   socket.on('message',function(d){
     console.log(d);
   });

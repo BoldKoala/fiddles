@@ -9,7 +9,7 @@
   <body>
   </body>
   <script>
-    var socket = io('http://localhost:8080');
+    var socket = io();
     socket.on('message',function(d){
       console.log(d);
     });
