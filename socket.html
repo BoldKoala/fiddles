@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>socket</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="./style/style.css">
+  </head>
+
+  <body>
+  </body>
+  <script>
+    var socket = io('http://localhost:8080');
+    socket.on('message',function(d){
+      console.log(d);
+    });
+    socket.on('broadcast',function(d){
+      console.log(d);
+    })
+
+    window.sendMsg = function(msg){
+      socket.emit('send',msg)
+    }
+
+  </script>
+
+</html>

@@ -5,6 +5,37 @@ var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHe
 var renderer = new THREE.WebGLRenderer({antialias: true});
 var WIDTH = window.innerWidth;
 var HEIGHT = window.innerHeight;
+var socket = io('http://localhost:8080');
+  socket.on('message',function(d){
+    console.log(d);
+  });
+  socket.on('broadcast',function(d){
+    console.log(d);
+  })
+
+  window.sendMsg = function(msg){
+    socket.emit('send',msg)
+  }
+
+var speed = 0;
+var spin = 0
+var direction = 0;
+var fire = false;
+
+socket.on('move',function(state){
+  // if(!isMoving){ 
+    tankRed.tanker.position.x = state.x;
+    tankRed.tanker.position.y = state.y;
+    tankRed.tanker.position.z = state.z;
+    tankRed.tanker.rotation.x = state.rx;
+    tankRed.tanker.rotation.y = state.ry;
+    tankRed.tanker.rotation.z = state.rz;
+    // speed = state.speed;
+    // spin = state.spin;
+    // direction = state.direction;
+  // }
+})
+
 
 //Add tank to map
 map.scene.add( tank.tanker );
@@ -14,6 +45,8 @@ map.scene.add( tankRed.tanker );
 
 camera.position.y = 40;
 camera.position.z = 0; 
+// camera.lookAt({x:0, y:0, z:0});
+
 //Set renderer size
 renderer.setSize( WIDTH, HEIGHT );
 renderer.shadowMapEnabled = true;
@@ -24,12 +57,8 @@ document.body.appendChild( renderer.domElement );
 
 //direction system
 
-var speed = 0;
-var spin = 0
-var direction = 0;
-var fire = false;
 
-
+// var isMoving = false;
 
 //Add event handler
 window.onkeydown = function(d){
@@ -54,6 +83,7 @@ window.onkeydown = function(d){
   if (d.keyCode === 32){
     fire = true;
   }
+  // isMoving = true;
 }
 window.onkeyup = function(d){
   //W ke
@@ -76,9 +106,23 @@ window.onkeyup = function(d){
   if (d.keyCode === 32){
     fire = false;
   }
+  // isMoving = false;
+  var pos = {
+      x: tank.tanker.position.x,
+      y: tank.tanker.position.y,
+      z: tank.tanker.position.z,
+      rx: tank.tanker.rotation.x,
+      ry: tank.tanker.rotation.y,
+      rz: tank.tanker.rotation.z,
+      speed: speed,
+      spin: spin,
+      direction: direction
+    };
+  socket.emit('sync',pos);
 }
 
 var noFire = false;
+
 
 // Start of render and animation
 function render() {
@@ -118,5 +162,21 @@ function render() {
   camera.rotation.y = Math.PI/2-direction;
 
   renderer.render( map.scene, camera );
+
+
+  // if(isMoving){
+    var pos = {
+      x: tank.tanker.position.x,
+      y: tank.tanker.position.y,
+      z: tank.tanker.position.z,
+      rx: tank.tanker.rotation.x,
+      ry: tank.tanker.rotation.y,
+      rz: tank.tanker.rotation.z,
+      speed: speed,
+      spin: spin,
+      direction: direction
+    };
+    socket.emit('sync',pos);
+  // }
 }
 render();
