@@ -9,15 +9,15 @@ function Bullet(dir1, dir2, speed, position) {
 
 
   bullet.material = {
-    bullet: new THREE.MeshLambertMaterial({ color: 'green' })
+    bullet: new THREE.MeshLambertMaterial({ color: 'orange' })
   }
   // ======>> Bullet building
   bullet.bulleter = new THREE.Mesh(new THREE.SphereGeometry(bullet.radius), bullet.material.bullet );
 
   
   bullet.move = function(){
-    this.bulleter.position.z += this.zSpeed/5
-    this.bulleter.position.x += this.xSpeed/5
+    this.bulleter.position.z += this.zSpeed*2
+    this.bulleter.position.x += this.xSpeed*2
   }
 
 

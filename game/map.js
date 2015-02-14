@@ -10,7 +10,7 @@ function Map(x, y, step, brightness) {
 
 	// ====== Materials =======
 	map.material = {
-		floor : new THREE.MeshLambertMaterial(),
+		floor : new THREE.MeshLambertMaterial({color: 'gray'}),
 		line  : new THREE.LineBasicMaterial({color: 'green'}),
 		tank  : new THREE.MeshLambertMaterial({color:'blue'})
 	};
@@ -23,7 +23,7 @@ function Map(x, y, step, brightness) {
 
 	// ======>> Add light source
 	map.light = new THREE.DirectionalLight(0xffffff,map.brightness);
-	map.light.position.set(7,5,0);
+	map.light.position.set(0,5,0);
 	map.scene.add(map.light);
 
 	// ====== Grid building =========
