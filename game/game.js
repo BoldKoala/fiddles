@@ -20,7 +20,18 @@ var socket = io();
 var speed = 0;
 var spin = 0
 var direction = 0;
+var speed2 = 0;
+var spin2 = 0
+var direction2 = 0;
+
 var fire = false;
+var noFire = false;
+var fire2 = false;
+var noFire2 = false;
+
+var timer;
+var timer2;
+var timerP = 0;
 
 socket.on('move',function(state){
   // if(!isMoving){ 
@@ -30,9 +41,12 @@ socket.on('move',function(state){
     tankRed.tanker.rotation.x = state.rx;
     tankRed.tanker.rotation.y = state.ry;
     tankRed.tanker.rotation.z = state.rz;
-    // speed = state.speed;
-    // spin = state.spin;
-    // direction = state.direction;
+    fire2 = state.fire;
+    noFire2 = state.noFire;
+    // speed2 = state.speed;
+    // spin2 = state.spin;
+    direction2 = state.direction;
+    timer2 = state.timer;
   // }
 })
 
@@ -116,28 +130,40 @@ window.onkeyup = function(d){
       rz: tank.tanker.rotation.z,
       speed: speed,
       spin: spin,
-      direction: direction
+      direction: direction,
+      fire: fire,
+      noFire: noFire,
+      timer: timer
     };
   socket.emit('sync',pos);
 }
 
-var noFire = false;
 
 
 // Start of render and animation
 function render() {
   requestAnimationFrame( render );
-  var timer = Date.now() * 0.0005
+  timer = Date.now()
 
   map.light.position.set(-camera.position.x, camera.position.y, camera.position.z);
 
   //Firing
   if(!noFire && fire){
-    tank.fire();
+    tank.fire(direction);
     noFire = true;
     setTimeout(function(){
       noFire = false;
     },250)
+  }
+  if (Date.now() - timerP > 250){
+    if(!noFire && fire2){
+      tankRed.fire(direction2);
+      timerP = Date.now();
+      noFire2 = true;
+      setTimeout(function(){
+        noFire2 = false;
+      },250)
+    }
   }
 
   //Bullets movement and collision check
@@ -149,7 +175,18 @@ function render() {
     } else if (!tank.firedBullets[i].hit){
       tank.firedBullets[i].move();
     }
+  }  
+
+  for (var i = 0; i < tankRed.firedBullets.length; i++){
+    if (!tankRed.firedBullets[i].hit && Math.sqrt(Math.pow((tankRed.firedBullets[i].bulleter.position.x - tank.tanker.position.x), 2) + Math.pow((tankRed.firedBullets[i].bulleter.position.z - tank.tanker.position.z), 2))/10 < 0.2){
+      console.log("You have been hit!!!!")
+      tankRed.firedBullets[i].hit = true;
+      map.scene.remove(tankRed.firedBullets[i].bulleter);
+    } else if (!tankRed.firedBullets[i].hit){
+      tankRed.firedBullets[i].move();
+    }
   }
+
   direction += spin;
   tank.tanker.position.x += Math.cos(direction)*speed;
   tank.tanker.position.z += Math.sin(direction)*speed;
@@ -174,7 +211,10 @@ function render() {
       rz: tank.tanker.rotation.z,
       speed: speed,
       spin: spin,
-      direction: direction
+      direction: direction,
+      fire: fire,
+      noFire: noFire,
+      timer: timer
     };
     socket.emit('sync',pos);
   // }

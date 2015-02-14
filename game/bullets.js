@@ -16,8 +16,8 @@ function Bullet(dir1, dir2, speed, position) {
 
   
   bullet.move = function(){
-    this.bulleter.position.z += this.zSpeed*2
-    this.bulleter.position.x += this.xSpeed*2
+    this.bulleter.position.z += this.zSpeed/10
+    this.bulleter.position.x += this.xSpeed/10
   }
 
 
