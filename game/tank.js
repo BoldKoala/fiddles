@@ -19,7 +19,7 @@ function Tank(x,y,z,color,speed) {
 	tank.tanker.position.y = tank.y/2;
 
 	// Tank fire
-	tank.fire = function(){
+	tank.fire = function(direction){
 		var bullet = Bullet(-Math.sin(direction), -Math.cos(direction), 2, tank.tanker.position)
 
 		tank.firedBullets.push(bullet)
