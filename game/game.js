@@ -88,13 +88,18 @@ window.onkeyup = function(d){
   }
 }
 
+render();
+
 // Start of render and animation
 function render() {
   requestAnimationFrame( render );
   timer = Date.now()
   map.light.position.set(-camera.position.x, camera.position.y, camera.position.z);
+  updatePosition();
+};
 
-  for(var i = 0; i<bullets.length; i++){
+function updatePosition() {
+    for(var i = 0; i<bullets.length; i++){
     bullets[i].move();
     bullets[i].hit(tanks,function(from, to, bullet){
       if(from === tanks._id ){
@@ -159,6 +164,4 @@ function render() {
       },1000)
     }
   }
-};
-
-render();
+}
