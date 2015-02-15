@@ -11,12 +11,13 @@ var eventHandlers = {
 	//Add bullets to all users
 	addBullet: function(pos){
 		var bullet = Bullet(-Math.sin(pos.direction), -Math.cos(pos.direction), 10);
-    bullets.push(bullet);
-    map.scene.add(bullet.bulleter);
 
     bullet.bulleter.position.x = pos.x;
     bullet.bulleter.position.y = pos.y;
     bullet.bulleter.position.z = pos.z;
+    bullets.push(bullet);
+    map.scene.add(bullet.bulleter);
+    bullet._id = pos.id;
 
     setTimeout(function(){
       map.scene.remove(bullets.shift().bulleter);

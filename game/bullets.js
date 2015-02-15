@@ -5,9 +5,10 @@ function Bullet(dir1, dir2, speed, position) {
   bullet.speed = speed;
   bullet.zSpeed = dir1 * speed;
   bullet.xSpeed = dir2 * speed;
+  bullet.isHit = false;
 
   bullet.material = {
-    bullet: new THREE.MeshLambertMaterial({ color: 'orange' })
+    bullet: new THREE.MeshBasicMaterial({ color: 'orange' })
   };
 
   // ======>> Bullet building
@@ -20,14 +21,13 @@ function Bullet(dir1, dir2, speed, position) {
 
   bullet.hit = function(tanks,cb){
     for(var tank in tanks){
-      if(tank !== tanks._id && tank !== '_id'){
+      if(tank !== '_id'){
         var dx = Math.abs(tanks[tank].tanker.position.x - this.bulleter.position.x);
         var dy = Math.abs(tanks[tank].tanker.position.y - this.bulleter.position.y);
         var dz = Math.abs(tanks[tank].tanker.position.z - this.bulleter.position.z);
-        
-        if(dx < 0.5 && dy < 0.5 && dz < 0.5) {
-          // console.log('hit', tank)
-          cb(tank,this)
+        if(dx < tanks[tank].x && dy < tanks[tank].y && dz < tanks[tank].z && !this.isHit){
+          this.isHit = true;
+          cb(this._id, tank, this);
         }
       }
     }

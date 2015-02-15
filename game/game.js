@@ -96,10 +96,15 @@ function render() {
 
   for(var i = 0; i<bullets.length; i++){
     bullets[i].move();
-    bullets[i].hit(tanks,function(id,bullet){
-      console.log('hit',id);
+    bullets[i].hit(tanks,function(from, to, bullet){
+      if(from === tanks._id ){
+        console.log('Hit ', to);
+      }
+      if(to === tanks._id){
+        console.log(from, ' hit me!');
+      }
       map.scene.remove(bullet.bulleter);
-    });
+    })
   }
 
   if(tanks._id){
@@ -136,13 +141,15 @@ function render() {
     if(tanks[tanks._id].isFire && !tanks[tanks._id].noFire){
       tanks[tanks._id].noFire = true;
       var bullet = tanks[tanks._id].fire(tanks[tanks._id].direction);
+      bullet._id = tanks._id;
       bullets.push(bullet);
       map.scene.add(bullet.bulleter);
       multiplayer.fire({
         x: bullet.bulleter.position.x,
         y: bullet.bulleter.position.y,
         z: bullet.bulleter.position.z,
-        direction: tanks[tanks._id].direction
+        direction: tanks[tanks._id].direction,
+        id: bullet._id
       })
       setTimeout(function(){
         tanks[tanks._id].noFire = false;

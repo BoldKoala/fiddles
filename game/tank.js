@@ -29,9 +29,9 @@ function Tank(x,y,z,color,speed) {
 	// Tank fire
 	tank.fire = function(direction){
 		bullet = Bullet(-Math.sin(direction), -Math.cos(direction), 10, this.tanker.position);
-		bullet.bulleter.position.x = this.tanker.position.x;
+		bullet.bulleter.position.x = this.tanker.position.x - Math.cos(direction);
 		bullet.bulleter.position.y = this.tanker.position.y;
-		bullet.bulleter.position.z = this.tanker.position.z;
+		bullet.bulleter.position.z = this.tanker.position.z - Math.sin(direction);
 		return bullet;
 	};
 
