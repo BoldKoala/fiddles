@@ -13,11 +13,6 @@ var bullets = [];
 var multiplayer = Multiplayer(map,tanks);
 var socket = multiplayer.socket;
 
-// // Initialize Camera position
-// camera.position.y = 40;
-// camera.position.z = 0; 
-// camera.lookAt({x:0, y:0, z:0});
-
 //Set renderer size
 renderer.setSize( WIDTH, HEIGHT );
 renderer.shadowMapEnabled = true;
@@ -49,6 +44,10 @@ window.onkeydown = function(d){
   if (d.keyCode === 32){
     tanks[tanks._id].isFire = true;
   }
+  //V key
+  if (d.keyCode === 86){
+    POV = POV === 'FPS' ? 'Birdeye' : 'FPS';
+  } 
 
   //c
   if(d.keyCode === 67){
@@ -118,6 +117,12 @@ function updatePosition() {
   if(tanks._id){
     //Calculate tank movements
     tanks[tanks._id].direction += tanks[tanks._id].spin;
+    if( tanks[tanks._id].direction >= Math.PI ){
+      tanks[tanks._id].direction = -Math.PI;
+    } else if( tanks[tanks._id].direction <= -Math.PI ){
+      tanks[tanks._id].direction = Math.PI;
+    }
+
     if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2){
       tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
     }
@@ -142,7 +147,7 @@ function updatePosition() {
         camera.rotation.x = 0;
         camera.rotation.y = Math.PI/2-tanks[tanks._id].direction;
         camera.rotation.z = 0;
-      } else if(dx < 0.01 && dy < 0.01 && dz < 0.01){
+      } else if(Math.abs(dx) < 0.0001 && Math.abs(dy) < 0.0001 && Math.abs(dz) < 0.001){
         LOCK = true;
       } else if(!LOCK){ 
         camera.position.y += dy/20;
@@ -160,7 +165,7 @@ function updatePosition() {
       var rx = -Math.PI/2 - camera.rotation.x;
       var ry = 0 - camera.rotation.y;
       LOCK = false;
-      if(dx < 0.1 && dy < 0.1 && dz < 0.1){
+      if(Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1 && Math.abs(dz) < 0.1){
         camera.position.y = 40;
         camera.position.x = 0; 
         camera.position.z = 0;

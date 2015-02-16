@@ -8,6 +8,12 @@ var eventHandlers = {
 	broadcast: function(msg){
 		console.log(msg);
 	},
+	//Remove disconnected tank
+	exit: function(id){
+		console.log(id," exited")
+		map.scene.remove(tanks[id].tanker);
+		delete tanks[id];
+	},
 	//Add bullets to all users
 	addBullet: function(pos){
 		var bullet = Bullet(-Math.sin(pos.direction), -Math.cos(pos.direction), 10);
