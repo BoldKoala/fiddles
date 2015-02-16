@@ -30,8 +30,11 @@ document.body.appendChild( renderer.domElement );
 //Add control handler
 window.onkeydown = function(d){
   //Tank Control
-  keyDown(d, tanks);
-
+  if(tanks._id){
+    if(tanks[tanks._id].hp > 0){
+      keyDown(d, tanks);
+    }
+  }
   //POV Control
   //V key
   if (d.keyCode === 86){
@@ -41,7 +44,11 @@ window.onkeydown = function(d){
 
 window.onkeyup = function(d){
   //Tank Control
-  keyUp(d,tanks);
+  if(tanks._id){
+    if(tanks[tanks._id].hp > 0){
+      keyUp(d,tanks);
+    }
+  }
 };
 
 //Invoke Rendering function
@@ -52,35 +59,47 @@ function render() {
   requestAnimationFrame(render);
   timer = Date.now()
   map.light.position.set(-camera.position.x, camera.position.y, camera.position.z);
-  updateBullets();
-  updateTanks();
-  updatePOV();
-  renderer.render( map.scene, camera );
-  syncStates();
-  updateBulletsFired();
+  if(tanks._id){
+    if(tanks[tanks._id].hp > 0){
+      updateBullets();
+      updateTanks();
+      updatePOV();
+      renderer.render( map.scene, camera );
+      syncStates();
+      updateBulletsFired();
+    } 
+  }
 };
 
+//Calculate bullets movement and collision
 function updateBullets() {
-  //Calculate bullets movement and collision
   for(var i = 0; i<bullets.length; i++){
     bullets[i].move();
     bullets[i].hit(tanks,function(from, to, bullet){
       if(to === tanks._id){
-        console.log(from+" hit "+to);
         multiplayer.hit(from,to);
+        tanks[tanks._id].hp--;
+        if(tanks[tanks._id].hp === 0){
+          map.scene.remove(tanks[tanks._id].tanker);
+          multiplayer.kill(tanks._id);
+          delete tanks[tanks._id];
+          delete tanks._id;
+        } else {
+          console.log(from+" hit "+to);
+        }
       }
       map.scene.remove(bullet.bulleter);
     })
   }
 }
 
+//Calculate tank movements
 function updateTanks() {
   if(tanks._id){
-    //Calculate tank movements
     tanks[tanks._id].direction += tanks[tanks._id].spin;
     var tankCollision = false;
 
-    
+
     for (var tankKey in tanks){
       if (tankKey !== "_id" && tankKey !== tanks._id){
         if (calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]) <= 1.2){
@@ -109,9 +128,9 @@ function updateTanks() {
   }
 }
 
+//FPS
 function updatePOV() {
   if(tanks._id){
-        //FPS
     if(POV === 'FPS'){ 
       var dx = (tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*5) - camera.position.x;
       var dy = (tanks[tanks._id].tanker.position.y + 2) - camera.position.y;
@@ -162,9 +181,9 @@ function updatePOV() {
   }
 }
 
+//Send tank position and rotation to other players
 function syncStates() {
   if(tanks._id){
-    //Send tank position and rotation to other players
     multiplayer.sync(
       {
         x: tanks[tanks._id].tanker.position.x,
@@ -180,9 +199,9 @@ function syncStates() {
   }
 }
 
+//Bullet logics
 function updateBulletsFired() {
   if(tanks._id){
-    //Bullet logics
     if(tanks[tanks._id].isFire && !tanks[tanks._id].noFire){
       tanks[tanks._id].noFire = true;
       var bullet = tanks[tanks._id].fire(tanks[tanks._id].direction);

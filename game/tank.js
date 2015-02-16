@@ -6,6 +6,7 @@ function Tank(x,y,z,color,speed) {
 	tank.z = z;
 	tank.color = color;
 	tank.speed = speed;
+	tank.hp = 10;
 
 	//direction system
 	tank.currentSpeed = 0;

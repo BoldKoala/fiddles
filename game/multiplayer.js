@@ -11,6 +11,11 @@ var eventHandlers = {
 	goodHit: function(hitter){
 		console.log(hitter.from+" hit "+hitter.to);
 	},
+	killed: function(id){
+		console.log(id + ' is dead');
+		map.scene.remove(tanks[id].tanker);
+		delete tanks[id];
+	},
 	//Remove disconnected tank
 	exit: function(id){
 		console.log(id," exited")
@@ -99,6 +104,11 @@ function Multiplayer(map,tanks,bullets){
 	//Trigger bullet hit event
 	multiplayer.hit = function(from, to){
 		multiplayer.socket.emit('hit',{from:from, to:to});
+	};
+
+	//Trigger kill
+	multiplayer.kill = function(dead){
+		multiplayer.socket.emit('dead',dead);
 	};
 
 	return multiplayer;
