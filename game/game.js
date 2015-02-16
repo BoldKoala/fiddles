@@ -118,10 +118,25 @@ function updatePosition() {
   if(tanks._id){
     //Calculate tank movements
     tanks[tanks._id].direction += tanks[tanks._id].spin;
-    if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2){
+    var tankCollision = false;
+
+    for (var tankKey in tanks){
+      if (tankKey !== "_id" && tankKey !== tanks._id){
+        if (calculateDistance(tanks[tanks._id], tanks[tankKey]) < 1.2 && calculateDistance(tanks[tanks._id], tanks[tankKey]) > 0.5){
+          tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*0.1;
+          tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*0.1;
+          // tanks[tankKey].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*0.1;
+          // tanks[tankKey].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*0.1;
+          // tanks[tanks._id].currentSpeed = 0;
+          tankCollision = true;
+        }
+      }
+    }
+
+    if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2){
       tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
     }
-    if (Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2){
+    if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2){
       tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
     }
     tanks[tanks._id].tanker.rotation.y = -tanks[tanks._id].direction;
@@ -213,4 +228,13 @@ function updatePosition() {
       },1000)
     }
   }
+}
+
+function calculateDistance(tank1, tank2){
+  x1 = tank1.tanker.position.x + Math.cos(tank1.direction) * tank1.currentSpeed;
+  x2 = tank2.tanker.position.x;
+  z1 = tank1.tanker.position.z + Math.sin(tank1.direction) * tank1.currentSpeed;
+  z2 = tank2.tanker.position.z;
+
+  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
 }
