@@ -13,11 +13,6 @@ var bullets = [];
 var multiplayer = Multiplayer(map,tanks);
 var socket = multiplayer.socket;
 
-// // Initialize Camera position
-// camera.position.y = 40;
-// camera.position.z = 0; 
-// camera.lookAt({x:0, y:0, z:0});
-
 //Set renderer size
 renderer.setSize( WIDTH, HEIGHT );
 renderer.shadowMapEnabled = true;
@@ -49,6 +44,10 @@ window.onkeydown = function(d){
   if (d.keyCode === 32){
     tanks[tanks._id].isFire = true;
   }
+  //V key
+  if (d.keyCode === 86){
+    POV = POV === 'FPS' ? 'Birdeye' : 'FPS';
+  } 
 
   //c
   if(d.keyCode === 67){
@@ -122,9 +121,11 @@ function updatePosition() {
 
     for (var tankKey in tanks){
       if (tankKey !== "_id" && tankKey !== tanks._id){
-        if (calculateDistance(tanks[tanks._id], tanks[tankKey]) < 1.2 && calculateDistance(tanks[tanks._id], tanks[tankKey]) > 0.5){
-          tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*0.1;
-          tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*0.1;
+        if (calculateDistance2(tanks[tanks._id], tanks[tankKey]) <= 1.2){
+          tankCollision = false;
+        } else if (calculateDistance(tanks[tanks._id], tanks[tankKey]) < 1.2){
+          tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+          tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
           // tanks[tankKey].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*0.1;
           // tanks[tankKey].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*0.1;
           // tanks[tanks._id].currentSpeed = 0;
@@ -133,7 +134,14 @@ function updatePosition() {
       }
     }
 
-    if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2){
+    // if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2){
+    if( tanks[tanks._id].direction >= Math.PI ){
+      tanks[tanks._id].direction = -Math.PI;
+    } else if( tanks[tanks._id].direction <= -Math.PI ){
+      tanks[tanks._id].direction = Math.PI;
+    }
+
+    if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2){
       tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
     }
     if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2){
@@ -157,7 +165,7 @@ function updatePosition() {
         camera.rotation.x = 0;
         camera.rotation.y = Math.PI/2-tanks[tanks._id].direction;
         camera.rotation.z = 0;
-      } else if(dx < 0.01 && dy < 0.01 && dz < 0.01){
+      } else if(Math.abs(dx) < 0.0001 && Math.abs(dy) < 0.0001 && Math.abs(dz) < 0.001){
         LOCK = true;
       } else if(!LOCK){ 
         camera.position.y += dy/20;
@@ -175,7 +183,7 @@ function updatePosition() {
       var rx = -Math.PI/2 - camera.rotation.x;
       var ry = 0 - camera.rotation.y;
       LOCK = false;
-      if(dx < 0.1 && dy < 0.1 && dz < 0.1){
+      if(Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1 && Math.abs(dz) < 0.1){
         camera.position.y = 40;
         camera.position.x = 0; 
         camera.position.z = 0;
@@ -234,6 +242,14 @@ function calculateDistance(tank1, tank2){
   x1 = tank1.tanker.position.x + Math.cos(tank1.direction) * tank1.currentSpeed;
   x2 = tank2.tanker.position.x;
   z1 = tank1.tanker.position.z + Math.sin(tank1.direction) * tank1.currentSpeed;
+  z2 = tank2.tanker.position.z;
+
+  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+}
+function calculateDistance2(tank1, tank2){
+  x1 = tank1.tanker.position.x;
+  x2 = tank2.tanker.position.x;
+  z1 = tank1.tanker.position.z;
   z2 = tank2.tanker.position.z;
 
   return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));

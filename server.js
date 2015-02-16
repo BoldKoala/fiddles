@@ -19,6 +19,10 @@ io.on('connection',function(socket, a, b){
 	socket.on('syncBullet',function(state){
 		socket.broadcast.emit('addBullet',state)
 	})
+	socket.on('disconnect',function(){
+		socket.broadcast.emit('exit',socket.id)
+	})
+
 })
 
 console.log('listening at Port: 8080...');
