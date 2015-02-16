@@ -45,9 +45,13 @@ var eventHandlers = {
 	},
 	//send tanks._id to socket id
 	id: function(id){
-		var r = Math.floor(Math.random()*256);
-		var g = Math.floor(Math.random()*256);
-		var b = Math.floor(Math.random()*256);
+		var codes = 0;
+		for(var i = 0; i<id.length; i++){
+			codes += id.charCodeAt(i);
+		}
+		var r = codes % Math.floor(Math.random()*256);
+		var g = codes % Math.floor(Math.random()*256);
+		var b = codes % Math.floor(Math.random()*256);
 		var rgb = 'rgb('+r+','+g+','+b+')';
 
 		tanks[id] = Tank(1,1,1, rgb, 0.1);

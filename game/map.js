@@ -22,9 +22,18 @@ function Map(x, y, step, brightness) {
 	map.scene.add(map.floor);
 
 	// ======>> Add light source
-	map.light = new THREE.DirectionalLight(0xffffff,map.brightness);
-	map.light.position.set(20,20,0);
+	map.light  = new THREE.DirectionalLight(0xffffff,map.brightness);
+	map.light2 = new THREE.DirectionalLight(0xffffff,map.brightness);
+	map.light3 = new THREE.DirectionalLight(0xffffff,map.brightness);
+	map.light4 = new THREE.DirectionalLight(0xffffff,map.brightness);
+	map.light.position.set(20,10,20);
+	map.light2.position.set(-20,10,20);
+	map.light3.position.set(-20,10,-20);	
+	map.light4.position.set(20,10,-0);	
 	map.scene.add(map.light);
+	map.scene.add(map.light2);
+	map.scene.add(map.light3);
+	map.scene.add(map.light4);
 
 	// ====== Grid building =========
 	map.line = new THREE.Geometry();
