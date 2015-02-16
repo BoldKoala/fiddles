@@ -1,6 +1,6 @@
 var HEIGHT = window.innerHeight;
 var WIDTH = window.innerWidth;
-var POV = 'FPS';
+var POV = 'Birdeye';
 var LOCK = true;
 
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 500 );
@@ -18,82 +18,38 @@ renderer.setSize( WIDTH, HEIGHT );
 renderer.shadowMapEnabled = true;
 renderer.shadowMapType = THREE.BasicShadowMap;
 
+//Initialize Camera
+camera.position.y = 40;
+camera.position.x = 0; 
+camera.position.z = 0;
+camera.lookAt({x:0, y:0, z:0});
+
 //Append canvas element to body;
 document.body.appendChild( renderer.domElement );
 
 //Add control handler
 window.onkeydown = function(d){
-  // console.log(d.keyCode);
-  //W key
-  if(d.keyCode === 87){
-    tanks[tanks._id].currentSpeed = -tanks[tanks._id].speed;
-  }
-  //S key
-  if(d.keyCode === 83){
-    tanks[tanks._id].currentSpeed = tanks[tanks._id].speed;
-  }
-  //D key
-  if(d.keyCode === 68){
-    tanks[tanks._id].spin = 0.05;
-  }
-  //A key
-  if(d.keyCode === 65){
-    tanks[tanks._id].spin = -0.05;
-  }
-  //space
-  if (d.keyCode === 32){
-    tanks[tanks._id].isFire = true;
-  }
+  //Tank Control
+  keyDown(d, tanks);
+
+  //POV Control
   //V key
   if (d.keyCode === 86){
     POV = POV === 'FPS' ? 'Birdeye' : 'FPS';
   } 
-
-  //c
-  if(d.keyCode === 67){
-      var counter = 0;
-      setInterval(function(){
-        if (counter < 50){
-          tanks[tanks._id].tanker.position.y += 0.06
-          counter++
-        }
-
-        if (counter >= 50 && counter < 100){
-          tanks[tanks._id].tanker.position.y -= 0.06
-          counter++
-        }
-      }, 10)
-  }
-}
+};
 
 window.onkeyup = function(d){
-  //W ke
-  if(d.keyCode === 87){
-    tanks[tanks._id].currentSpeed = 0;
-  }
-  //S ke
-  if(d.keyCode === 83){
-    tanks[tanks._id].currentSpeed = 0;
-  }
-  //D key
-  if(d.keyCode === 68){
-    tanks[tanks._id].spin = 0;
-  }
-  //A key
-  if(d.keyCode === 65){
-    tanks[tanks._id].spin = 0;  
-  }
-  //space
-  if (d.keyCode === 32){
-    tanks[tanks._id].isFire = false;
-  }
-}
+  //Tank Control
+  keyUp(d,tanks);
+};
 
+//Invoke Rendering function
 render();
 
 // Start of render and animation
 function render() {
-  requestAnimationFrame( render );
+  requestAnimationFrame(render);
   timer = Date.now()
   map.light.position.set(-camera.position.x, camera.position.y, camera.position.z);
   updatePosition();
@@ -104,11 +60,9 @@ function updatePosition() {
   for(var i = 0; i<bullets.length; i++){
     bullets[i].move();
     bullets[i].hit(tanks,function(from, to, bullet){
-      if(from === tanks._id ){
-        console.log('Hit ', to);
-      }
       if(to === tanks._id){
-        console.log(from, ' hit me!');
+        console.log(from+" hit "+to);
+        multiplayer.hit(from,to);
       }
       map.scene.remove(bullet.bulleter);
     })
@@ -147,15 +101,15 @@ function updatePosition() {
         camera.rotation.x = 0;
         camera.rotation.y = Math.PI/2-tanks[tanks._id].direction;
         camera.rotation.z = 0;
-      } else if(Math.abs(dx) < 0.0001 && Math.abs(dy) < 0.0001 && Math.abs(dz) < 0.001){
+      } else if(Math.abs(dx) < 0.01 && Math.abs(dy) < 0.01 && Math.abs(dz) < 0.01){
         LOCK = true;
       } else if(!LOCK){ 
         camera.position.y += dy/20;
         camera.position.x += dx/20; 
         camera.position.z += dz/20; 
-        camera.rotation.x += rx/25;
+        camera.rotation.x += rx/50;
         camera.rotation.y += ry/25;
-        camera.rotation.z += rz/25;
+        camera.rotation.z += rz/50;
       }
     } else if (POV === 'Birdeye') {
       var dx =  0 - camera.position.x;
@@ -165,7 +119,7 @@ function updatePosition() {
       var rx = -Math.PI/2 - camera.rotation.x;
       var ry = 0 - camera.rotation.y;
       LOCK = false;
-      if(Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1 && Math.abs(dz) < 0.1){
+      if(Math.abs(dx) < 0.05 && Math.abs(dy) < 0.05 && Math.abs(dz) < 0.05){
         camera.position.y = 40;
         camera.position.x = 0; 
         camera.position.z = 0;

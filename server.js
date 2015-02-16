@@ -12,16 +12,19 @@ io.on('connection',function(socket, a, b){
 
 	socket.on('send',function(d){
 		socket.broadcast.emit('broadcast',d);
-	})
+	});
 	socket.on('sync',function(state){
 		socket.broadcast.emit('move',state)
-	})
+	});
 	socket.on('syncBullet',function(state){
 		socket.broadcast.emit('addBullet',state)
-	})
+	});
+	socket.on('hit',function(hitter){
+		socket.broadcast.emit('goodHit', hitter);
+	});
 	socket.on('disconnect',function(){
 		socket.broadcast.emit('exit',socket.id)
-	})
+	});
 
 })
 

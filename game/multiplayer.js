@@ -8,6 +8,9 @@ var eventHandlers = {
 	broadcast: function(msg){
 		console.log(msg);
 	},
+	goodHit: function(hitter){
+		console.log(hitter.from+" hit "+hitter.to);
+	},
 	//Remove disconnected tank
 	exit: function(id){
 		console.log(id," exited")
@@ -93,6 +96,10 @@ function Multiplayer(map,tanks,bullets){
 		multiplayer.socket.emit('syncBullet',data);
 	};
 
+	//Trigger bullet hit event
+	multiplayer.hit = function(from, to){
+		multiplayer.socket.emit('hit',{from:from, to:to});
+	};
 
 	return multiplayer;
 }
