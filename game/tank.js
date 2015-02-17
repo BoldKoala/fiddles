@@ -22,10 +22,17 @@ function Tank(x,y,z,color,speed) {
 	};
 
 	// ======>> Cube building
-	tank.tanker = new THREE.Mesh(new THREE.BoxGeometry(tank.x, tank.y, tank.z), tank.material.tank );
+	var loader = new THREE.ObjectLoader();
+	loader.load('./Model/German-Tank/german.json',function(tankmodel){
+			// console.log(tankmodel);
+			// tankmodel.rotation.y = Math.PI/2;
+			tank.tanker = tankmodel;
+			tank.tanker.rotation.y = Math.PI/2;
+		  map.scene.add(tank.tanker);
+	})
+	// tank.tanker = new THREE.Mesh(new THREE.BoxGeometry(tank.x, tank.y, tank.z), tank.material.tank );
 
 	// Position Cube
-	tank.tanker.position.y = tank.y/2;
 
 	// Tank fire
 	tank.fire = function(direction){

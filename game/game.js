@@ -14,6 +14,10 @@ var bullets = [];
 var multiplayer = Multiplayer(map,tanks);
 var socket = multiplayer.socket;
 
+// var loader = new THREE.ObjectLoader();
+// loader.load('./Model/German-Tank/german.json',function(obj){
+//   map.scene.add(obj);
+// })
 
 
 //Set renderer size
