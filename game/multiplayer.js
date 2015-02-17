@@ -14,8 +14,10 @@ var eventHandlers = {
 	killed: function(id){
 		console.log(id + ' is dead');
 		map.scene.remove(tanks[id].tanker);
+		tanks[id].hp = 0;
 		// delete tanks[id];
 		setTimeout(function(){
+			tanks[id].hp = 10;
 			map.scene.add(tanks[id].tanker)
 		},5000)
 	},

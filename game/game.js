@@ -90,11 +90,9 @@ function updateBullets() {
         tanks[tanks._id].hp--;
         if(tanks[tanks._id].hp === 0){
           document.getElementById('tank-hp').innerHTML = tanks[tanks._id].hp;
+          document.getElementById('dead').style.display = 'inline-block';          
           map.scene.remove(tanks[tanks._id].tanker);
           multiplayer.kill(tanks._id);
-          document.getElementById('dead').style.display = 'inline-block';          
-          // delete tanks[tanks._id];
-          // delete tanks._id;
           setTimeout(function(){
             tanks[tanks._id].hp = 10;
             INITIAL = true;
@@ -122,7 +120,7 @@ function updateTanks() {
       if (tankKey !== "_id" && tankKey !== tanks._id){
         if (calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]) <= 1.2){
           tankCollision = false;
-        } else if (calculateNextDistance(tanks[tanks._id], tanks[tankKey]) < 1.2){
+        } else if (calculateNextDistance(tanks[tanks._id], tanks[tankKey]) < 1.2 && tanks[tankKey].hp > 0){
           tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
           tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
           tankCollision = true;
