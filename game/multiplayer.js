@@ -14,7 +14,10 @@ var eventHandlers = {
 	killed: function(id){
 		console.log(id + ' is dead');
 		map.scene.remove(tanks[id].tanker);
-		delete tanks[id];
+		// delete tanks[id];
+		setTimeout(function(){
+			map.scene.add(tanks[id].tanker)
+		},5000)
 	},
 	//Remove disconnected tank
 	exit: function(id){
@@ -69,6 +72,7 @@ var eventHandlers = {
 		var rgb = 'rgb('+r+','+g+','+b+')';
 
 		tanks[id] = Tank(1,1,1, rgb, 0.1);
+
 		map.scene.add(tanks[id].tanker);
 		tanks._id = id;
 	}

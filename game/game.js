@@ -2,6 +2,7 @@ var HEIGHT = window.innerHeight;
 var WIDTH = window.innerWidth;
 var POV = 'Birdeye';
 var LOCK = true;
+var INITIAL = true;
 
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 500 );
 var renderer = new THREE.WebGLRenderer({antialias: true});
@@ -12,6 +13,8 @@ var bullets = [];
 
 var multiplayer = Multiplayer(map,tanks);
 var socket = multiplayer.socket;
+
+
 
 //Set renderer size
 renderer.setSize( WIDTH, HEIGHT );
@@ -60,6 +63,12 @@ function render() {
   timer = Date.now()
   map.light.position.set(-camera.position.x, camera.position.y, camera.position.z);
   if(tanks._id){
+    //HP Bar
+    if(INITIAL){ 
+      document.getElementById('tank-color').style.backgroundColor = tanks[tanks._id].color;
+      document.getElementById('tank-hp').innerHTML = tanks[tanks._id].hp;
+      INITIAL = false;
+    }
     if(tanks[tanks._id].hp > 0){
       updateBullets();
       updateTanks();
@@ -80,12 +89,21 @@ function updateBullets() {
         multiplayer.hit(from,to);
         tanks[tanks._id].hp--;
         if(tanks[tanks._id].hp === 0){
+          document.getElementById('tank-hp').innerHTML = tanks[tanks._id].hp;
           map.scene.remove(tanks[tanks._id].tanker);
           multiplayer.kill(tanks._id);
-          delete tanks[tanks._id];
-          delete tanks._id;
+          document.getElementById('dead').style.display = 'inline-block';          
+          // delete tanks[tanks._id];
+          // delete tanks._id;
+          setTimeout(function(){
+            tanks[tanks._id].hp = 10;
+            INITIAL = true;
+            document.getElementById('dead').style.display = 'none';          
+            map.scene.add(tanks[tanks._id].tanker)
+          },5000)
         } else {
           console.log(from+" hit "+to);
+          document.getElementById('tank-hp').innerHTML = tanks[tanks._id].hp;
         }
       }
       map.scene.remove(bullet.bulleter);
