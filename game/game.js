@@ -146,15 +146,15 @@ function updatePOV() {
         camera.rotation.x = 0;
         camera.rotation.y = Math.PI/2-tanks[tanks._id].direction;
         camera.rotation.z = 0;
-      } else if(Math.abs(dx) < 0.01 && Math.abs(dy) < 0.01 && Math.abs(dz) < 0.01){
+      } else if(Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(dz) < 1){
         LOCK = true;
       } else if(!LOCK){ 
         camera.position.y += dy/20;
         camera.position.x += dx/20; 
         camera.position.z += dz/20; 
-        camera.rotation.x += rx/50;
-        camera.rotation.y += ry/25;
-        camera.rotation.z += rz/50;
+        camera.rotation.x += rx/10;
+        camera.rotation.y += ry/10;
+        camera.rotation.z += rz/10;
       }
     } else if (POV === 'Birdeye') {
       var dx =  0 - camera.position.x;
