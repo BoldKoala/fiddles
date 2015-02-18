@@ -45,14 +45,21 @@ var eventHandlers = {
 	//Sync movements for all users
 	move: function(state){
 		if(!tanks[state.id]){
-			tanks[state.id] = Tank(0.25,0.25,0.25, state.color, 0.1,function(d){
-				map.scene.add(d);
-				d.position.x = state.x;
-				d.position.y = state.y;
-				d.position.z = state.z;
-				d.rotation.x = state.rx;
-				d.rotation.y = state.ry;
-				d.rotation.z = state.rz;
+			tanks[state.id] = Tank({
+				x:0.25,
+				y:0.25,
+				z:0.25, 
+				color:state.color,
+				speed: 0.1,
+				onLoad: function(d){
+					map.scene.add(d);
+					d.position.x = state.x;
+					d.position.y = state.y;
+					d.position.z = state.z;
+					d.rotation.x = state.rx;
+					d.rotation.y = state.ry;
+					d.rotation.z = state.rz;
+				}
 			});
 		} else if(tanks[state.id].tanker){
 			tanks[state.id].tanker.position.x = state.x;
@@ -74,9 +81,17 @@ var eventHandlers = {
 		var b = codes % Math.floor(Math.random()*256);
 		var rgb = 'rgb('+r+','+g+','+b+')';
 
-		tanks[id] = Tank(0.25,0.25,0.25, rgb, 0.1, function(d){
-			map.scene.add(d);
+		tanks[id] = Tank({
+			x:0.25,
+			y:0.25,
+			z:0.25, 
+			color:rgb, 
+			speed:0.1, 
+			onLoad:function(d){
+				map.scene.add(d);
+			}
 		});
+
 		tanks._id = id;
 	}
 };

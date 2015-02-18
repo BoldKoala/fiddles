@@ -1,9 +1,11 @@
+//Global Variables
 var HEIGHT = window.innerHeight;
 var WIDTH = window.innerWidth;
 var POV = 'Birdeye';
 var LOCK = true;
 var INITIAL = true;
 
+//Instantiate Camera and Renderer
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 500 );
 var renderer = new THREE.WebGLRenderer({antialias: true});
 
@@ -13,12 +15,6 @@ var bullets = [];
 
 var multiplayer = Multiplayer(map,tanks);
 var socket = multiplayer.socket;
-var tankSize = 1.2;
-// var loader = new THREE.ObjectLoader();
-// loader.load('./Model/German-Tank/german.json',function(obj){
-//   map.scene.add(obj);
-// })
-
 
 //Set renderer size
 renderer.setSize( WIDTH, HEIGHT );
@@ -122,9 +118,9 @@ function updateTanks() {
 
     for (var tankKey in tanks){
       if (tankKey !== "_id" && tankKey !== tanks._id){
-        if (calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]) <= tankSize){
+        if (calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]) <= tanks[tanks._id].x * 5){
           tankCollision = false;
-        } else if (calculateNextDistance(tanks[tanks._id], tanks[tankKey]) < tankSize + 0.1 * tanks[tanks._id].x && tanks[tankKey].hp > 0){
+        } else if (calculateNextDistance(tanks[tanks._id], tanks[tankKey]) < tanks[tanks._id].x * 5.1 && tanks[tankKey].hp > 0){
           tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
           tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
           tankCollision = true;
@@ -138,10 +134,10 @@ function updateTanks() {
       tanks[tanks._id].direction = Math.PI;
     }
 
-    if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2){
+    if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2-tanks[tanks._id].x*5){
       tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
     }
-    if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2){
+    if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2-tanks[tanks._id].z*5){
       tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
     }
     tanks[tanks._id].tanker.rotation.y = -tanks[tanks._id].direction;
@@ -160,9 +156,9 @@ function updatePOV() {
       var rz = 0 - camera.rotation.z;
 
       if(LOCK){
-        camera.position.x = tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*5;
-        camera.position.y = tanks[tanks._id].tanker.position.y + 2;
-        camera.position.z = tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*5;
+        camera.position.x = tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].x*12;
+        camera.position.y = tanks[tanks._id].tanker.position.y + tanks[tanks._id].y * 6;
+        camera.position.z = tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].z*12;
         camera.rotation.x = 0;
         camera.rotation.y = Math.PI/2-tanks[tanks._id].direction;
         camera.rotation.z = 0;
