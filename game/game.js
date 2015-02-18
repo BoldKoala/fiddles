@@ -17,6 +17,13 @@ var testTower2 = createOBJ(map.x/4, 0, map.y/4)
 var testTower3 = createOBJ(map.x/4, 0, -map.y/4)
 var testTower4 = createOBJ(-map.x/4, 0, map.y/4)
 var testTower5 = createOBJ(-map.x/4, 0, -map.y/4)
+var towers = {
+  tower1: testTower1,
+  tower2: testTower2,
+  tower3: testTower3,
+  tower4: testTower4,
+  tower5: testTower5
+}
 
 var multiplayer = Multiplayer(map,tanks);
 var socket = multiplayer.socket;
@@ -88,6 +95,7 @@ function render() {
 //Calculate bullets movement and collision
 function updateBullets() {
   for(var i = 0; i<bullets.length; i++){
+    
     bullets[i].move();
     bullets[i].hit(tanks,function(from, to, bullet){
       if(to === tanks._id){
@@ -132,6 +140,17 @@ function updateTanks() {
         }
       }
     }
+
+    for (var towerKey in towers){
+      if (calculateCurrentTowerDistance(tanks[tanks._id], towers[towerKey]) <= towers[towerKey].collisionSize){
+        tankCollision = false;
+      } else if (calculateNextTowerDistance(tanks[tanks._id], towers[towerKey]) < towers[towerKey].collisionSize + 0.1){
+        tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+        tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+        tankCollision = true;
+      }
+    }
+
 
     if( tanks[tanks._id].direction >= Math.PI ){
       tanks[tanks._id].direction = -Math.PI;
@@ -263,4 +282,19 @@ function calculateCurrentDistance(tank1, tank2){
     z2 = tank2.tanker.position.z;
     return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
   }
+}
+
+function calculateNextTowerDistance(tank, tower){
+  x1 = tank.tanker.position.x + Math.cos(tank.direction) * tank.currentSpeed;
+  x2 = tower.model.position.x;
+  z1 = tank.tanker.position.z + Math.sin(tank.direction) * tank.currentSpeed;
+  z2 = tower.model.position.z;
+  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+}
+function calculateCurrentTowerDistance(tank, tower){
+  x1 = tank.tanker.position.x;
+  x2 = tower.model.position.x;
+  z1 = tank.tanker.position.z;
+  z2 = tower.model.position.z;
+  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
 }

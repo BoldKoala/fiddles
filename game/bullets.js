@@ -6,6 +6,7 @@ function Bullet(dir1, dir2, speed, position) {
   bullet.zSpeed = dir1 * speed;
   bullet.xSpeed = dir2 * speed;
   bullet.isHit = false;
+  bullet.hitTower = false;
 
   bullet.material = {
     bullet: new THREE.MeshBasicMaterial({ color: 'orange' })
@@ -15,8 +16,21 @@ function Bullet(dir1, dir2, speed, position) {
   bullet.bulleter = new THREE.Mesh(new THREE.SphereGeometry(bullet.radius), bullet.material.bullet );
 
   bullet.move = function(){
-    this.bulleter.position.z += this.zSpeed/10;
-    this.bulleter.position.x += this.xSpeed/10;
+    for (var towerKey in towers){
+      var dx = Math.abs(towers[towerKey].model.position.x - this.bulleter.position.x);
+      var dy = Math.abs(towers[towerKey].model.position.y - this.bulleter.position.y);
+      var dz = Math.abs(towers[towerKey].model.position.z - this.bulleter.position.z);
+      if(dx < towers[towerKey].collisionSize/1.9 && dy < towers[towerKey].collisionSize/1.9 && dz < towers[towerKey].collisionSize/1.9 && !this.hitTower){
+        this.hitTower = true;
+        map.scene.remove(this.bulleter)
+      }
+    }
+
+    if (!this.hitTower){
+      this.bulleter.position.z += this.zSpeed/10;
+      this.bulleter.position.x += this.xSpeed/10;
+    }
+    this.hitTower = false;
   };
 
   bullet.hit = function(tanks,cb){

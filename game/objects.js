@@ -13,10 +13,6 @@ function createOBJ(x, y, z) {
 
   var OBJ = {};
 
-  OBJ.testMaterial = {
-    tank: new THREE.MeshLambertMaterial({ color: "red" })
-  };
-
   var loader = new THREE.ObjectLoader();
   loader.load('./Model/objects/castle-tower.scene/castle-tower.json',function(OBJModel){
       OBJ.model = OBJModel;
@@ -46,6 +42,33 @@ function createOBJ(x, y, z) {
       OBJ.model.position.z = z;
       map.scene.add(OBJ.model);
   })
+  
+  // ======= Collison ========
+  OBJ.collisionSize = 3;
+  // OBJ.collisionRange = {
+  //   xMin: OBJ.model.position.x - collisionSize,
+  //   xMax: OBJ.model.position.x - collisionSize,
+  //   zMin: OBJ.model.position.z - collisionSize,
+  //   zMax: OBJ.model.position.z - collisionSize
+  // }
 
   return OBJ;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
