@@ -45,16 +45,16 @@ var eventHandlers = {
 	//Sync movements for all users
 	move: function(state){
 		if(!tanks[state.id]){
-			tanks[state.id] = Tank(0.2,0.2,0.2, state.color, 0.1, function(){	
-				map.scene.add(tanks[state.id].tanker);
-				tanks[state.id].tanker.position.x = state.x;
-				tanks[state.id].tanker.position.y = state.y;
-				tanks[state.id].tanker.position.z = state.z;
-				tanks[state.id].tanker.rotation.x = state.rx;
-				tanks[state.id].tanker.rotation.y = state.ry;
-				tanks[state.id].tanker.rotation.z = state.rz;
+			tanks[state.id] = Tank(1,1,1, state.color, 0.1,function(d){
+				map.scene.add(d);
+				d.position.x = state.x;
+				d.position.y = state.y;
+				d.position.z = state.z;
+				d.rotation.x = state.rx;
+				d.rotation.y = state.ry;
+				d.rotation.z = state.rz;
 			});
-		} else {
+		} else if(tanks[state.id].tanker){
 			tanks[state.id].tanker.position.x = state.x;
 			tanks[state.id].tanker.position.y = state.y;
 			tanks[state.id].tanker.position.z = state.z;
@@ -74,8 +74,8 @@ var eventHandlers = {
 		}
 		var rgb = 'rgb('+r+','+g+','+b+')';
 
-		tanks[id] = Tank(0.2,0.2,0.2, rgb, 0.1, function(){
-			map.scene.add(tanks[id].tanker);
+		tanks[id] = Tank(1,1,1, rgb, 0.1, function(d){
+			map.scene.add(d);
 		});
 		tanks._id = id;
 	}

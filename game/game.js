@@ -246,18 +246,20 @@ function updateBulletsFired() {
 }
 
 function calculateNextDistance(tank1, tank2){
-  x1 = tank1.tanker.position.x + Math.cos(tank1.direction) * tank1.currentSpeed;
-  x2 = tank2.tanker.position.x;
-  z1 = tank1.tanker.position.z + Math.sin(tank1.direction) * tank1.currentSpeed;
-  z2 = tank2.tanker.position.z;
-
-  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+  if(tank1.tanker && tank2.tanker){
+    x1 = tank1.tanker.position.x + Math.cos(tank1.direction) * tank1.currentSpeed;
+    x2 = tank2.tanker.position.x;
+    z1 = tank1.tanker.position.z + Math.sin(tank1.direction) * tank1.currentSpeed;
+    z2 = tank2.tanker.position.z;
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+  }
 }
 function calculateCurrentDistance(tank1, tank2){
-  x1 = tank1.tanker.position.x;
-  x2 = tank2.tanker.position.x;
-  z1 = tank1.tanker.position.z;
-  z2 = tank2.tanker.position.z;
-
-  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+  if(tank1.tanker && tank2.tanker){   
+    x1 = tank1.tanker.position.x;
+    x2 = tank2.tanker.position.x;
+    z1 = tank1.tanker.position.z;
+    z2 = tank2.tanker.position.z;
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+  }
 }
