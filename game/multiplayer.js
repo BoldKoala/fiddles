@@ -45,7 +45,7 @@ var eventHandlers = {
 	//Sync movements for all users
 	move: function(state){
 		if(!tanks[state.id]){
-			tanks[state.id] = Tank(1,1,1, state.color, 0.1,function(d){
+			tanks[state.id] = Tank(0.25,0.25,0.25, state.color, 0.1,function(d){
 				map.scene.add(d);
 				d.position.x = state.x;
 				d.position.y = state.y;
@@ -65,16 +65,16 @@ var eventHandlers = {
 	},
 	//send tanks._id to socket id
 	id: function(id){
-		var r = codes % Math.floor(Math.random()*256);
-		var g = codes % Math.floor(Math.random()*256);
-		var b = codes % Math.floor(Math.random()*256);
 		var codes = 0;
 		for(var i = 0; i<id.length; i++){
 			codes += id.charCodeAt(i);
 		}
+		var r = codes % Math.floor(Math.random()*256);
+		var g = codes % Math.floor(Math.random()*256);
+		var b = codes % Math.floor(Math.random()*256);
 		var rgb = 'rgb('+r+','+g+','+b+')';
 
-		tanks[id] = Tank(1,1,1, rgb, 0.1, function(d){
+		tanks[id] = Tank(0.25,0.25,0.25, rgb, 0.1, function(d){
 			map.scene.add(d);
 		});
 		tanks._id = id;
