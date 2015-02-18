@@ -10,7 +10,7 @@ function Map(x, y, step, brightness) {
 
 	// ====== Materials =======
 	map.material = {
-		floor : new THREE.MeshLambertMaterial({color: 'blue'}),
+		floor : new THREE.MeshLambertMaterial({color: 'gray'}),
 		line  : new THREE.LineBasicMaterial({color: 'green'}),
 		tank  : new THREE.MeshLambertMaterial({color:'blue'})
 	};
@@ -43,7 +43,7 @@ function Map(x, y, step, brightness) {
 	  map.line.vertices.push(new THREE.Vector3( map.x - 20, -0.1, i ));
 	  map.line.vertices.push(new THREE.Vector3( i, -0.1, -map.x + 20 ));
 	  map.line.vertices.push(new THREE.Vector3( i, -0.1, map.x - 20 ));
-		map.scene.add(new THREE.Line( map.line, map.material.line, THREE.LinePieces));
+		// map.scene.add(new THREE.Line( map.line, map.material.line, THREE.LinePieces));
 	}
 	// map.scene.add(map.line)
 
