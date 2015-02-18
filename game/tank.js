@@ -1,5 +1,12 @@
-function Tank(x,y,z,color,speed) {
-	var tank = {};
+function Tank(x,y,z,color,speed, cb) {
+  //Texture function
+	var texture = function(i){
+		var url = ['./Model/German-Tank/Track.jpg', './Model/German-Tank/Turret.jpg','./Model/German-Tank/Turret 2.jpg','./Model/German-Tank/Body 2.jpg','./Model/German-Tank/Body 1.jpg'];
+		return new THREE.MeshLambertMaterial({ 
+			map: THREE.ImageUtils.loadTexture(url[i])
+		})
+	}
+	var tank = {};  
 
 	tank.x = x;
 	tank.y = y;
@@ -22,10 +29,27 @@ function Tank(x,y,z,color,speed) {
 	};
 
 	// ======>> Cube building
-	tank.tanker = new THREE.Mesh(new THREE.BoxGeometry(tank.x, tank.y, tank.z), tank.material.tank );
+	// tank.tanker = new THREE.Mesh(new THREE.BoxGeometry(tank.x, tank.y, tank.z), tank.material.tank );
 
 	// Position Cube
-	tank.tanker.position.y = tank.y/2;
+	// tank.tanker.position.y = tank.y/2;
+
+	var loader = new THREE.ObjectLoader();
+	loader.load('./Model/German-Tank/german.json',function(tankmodel){
+			tank.tanker = tankmodel;
+		  tank.tanker.position.y += 0.5;
+		  tank.tanker.children.forEach(function(part,i){
+		  	if(i === 1){
+					tank.tanker.children[1].material.color.set(tank.color);			
+		  	} else if (i < 5){
+					tank.tanker.children[i].material = texture(i);		  	
+		  	}
+		  	tank.tanker.children[i].scale.set(tank.x, tank.y, tank.z);
+		  })
+		  cb(tank.tanker);
+	})
+
+	// cb(tank.tanker);
 
 	// Tank fire
 	tank.fire = function(direction){
