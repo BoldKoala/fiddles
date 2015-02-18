@@ -45,14 +45,15 @@ var eventHandlers = {
 	//Sync movements for all users
 	move: function(state){
 		if(!tanks[state.id]){
-			tanks[state.id] = Tank(0.5,0.5,0.5, state.color, 0.1);
-			map.scene.add(tanks[state.id].tanker);
-			tanks[state.id].tanker.position.x = state.x;
-			tanks[state.id].tanker.position.y = state.y;
-			tanks[state.id].tanker.position.z = state.z;
-			tanks[state.id].tanker.rotation.x = state.rx;
-			tanks[state.id].tanker.rotation.y = state.ry;
-			tanks[state.id].tanker.rotation.z = state.rz;
+			tanks[state.id] = Tank(0.2,0.2,0.2, state.color, 0.1, function(){	
+				map.scene.add(tanks[state.id].tanker);
+				tanks[state.id].tanker.position.x = state.x;
+				tanks[state.id].tanker.position.y = state.y;
+				tanks[state.id].tanker.position.z = state.z;
+				tanks[state.id].tanker.rotation.x = state.rx;
+				tanks[state.id].tanker.rotation.y = state.ry;
+				tanks[state.id].tanker.rotation.z = state.rz;
+			});
 		} else {
 			tanks[state.id].tanker.position.x = state.x;
 			tanks[state.id].tanker.position.y = state.y;
@@ -64,18 +65,18 @@ var eventHandlers = {
 	},
 	//send tanks._id to socket id
 	id: function(id){
+		var r = codes % Math.floor(Math.random()*256);
+		var g = codes % Math.floor(Math.random()*256);
+		var b = codes % Math.floor(Math.random()*256);
 		var codes = 0;
 		for(var i = 0; i<id.length; i++){
 			codes += id.charCodeAt(i);
 		}
-		var r = codes % Math.floor(Math.random()*256);
-		var g = codes % Math.floor(Math.random()*256);
-		var b = codes % Math.floor(Math.random()*256);
 		var rgb = 'rgb('+r+','+g+','+b+')';
 
-		tanks[id] = Tank(0.5,0.5,0.5, rgb, 0.1);
-
-		map.scene.add(tanks[id].tanker);
+		tanks[id] = Tank(0.2,0.2,0.2, rgb, 0.1, function(){
+			map.scene.add(tanks[id].tanker);
+		});
 		tanks._id = id;
 	}
 };

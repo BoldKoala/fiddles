@@ -1,4 +1,4 @@
-function Tank(x,y,z,color,speed) {
+function Tank(x,y,z,color,speed,cb) {
 	//Texture function
 	var texture = function(i){
 		var url = ['./Model/German-Tank/Track.jpg', './Model/German-Tank/Turret.jpg','./Model/German-Tank/Turret 2.jpg','./Model/German-Tank/Body 2.jpg','./Model/German-Tank/Body 1.jpg'];
@@ -34,14 +34,14 @@ function Tank(x,y,z,color,speed) {
 		  tank.tanker.position.y += 0.5;
 		  tank.tanker.children.forEach(function(part,i){
 		  	if(i === 1){
-					tank.tanker.children[i].material.color.set(tank.color);			
-		  	} else {
+					tank.tanker.children[1].material.color.set(tank.color);			
+		  	} else if (i < 5){
 					tank.tanker.children[i].material = texture(i);		  	
 		  	}
-
 		  	tank.tanker.children[i].scale.set(tank.x, tank.y, tank.z);
 		  })
-		  map.scene.add(tank.tanker);
+		  cb(tank.tanker);
+		  // map.scene.add(tank.tanker);
 	})
 	// Position Cube
 

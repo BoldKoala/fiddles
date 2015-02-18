@@ -73,7 +73,7 @@ function render() {
       document.getElementById('tank-hp').innerHTML = tanks[tanks._id].hp;
       INITIAL = false;
     }
-    if(tanks[tanks._id].hp > 0){
+    if(tanks[tanks._id].hp > 0 && tanks[tanks._id].tanker){
       updateBullets();
       updateTanks();
       updatePOV();
