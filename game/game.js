@@ -13,7 +13,7 @@ var bullets = [];
 
 var multiplayer = Multiplayer(map,tanks);
 var socket = multiplayer.socket;
-
+var tankSize = 1.2;
 // var loader = new THREE.ObjectLoader();
 // loader.load('./Model/German-Tank/german.json',function(obj){
 //   map.scene.add(obj);
@@ -122,9 +122,9 @@ function updateTanks() {
 
     for (var tankKey in tanks){
       if (tankKey !== "_id" && tankKey !== tanks._id){
-        if (calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]) <= 1.2){
+        if (calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]) <= tankSize){
           tankCollision = false;
-        } else if (calculateNextDistance(tanks[tanks._id], tanks[tankKey]) < 1.2 && tanks[tankKey].hp > 0){
+        } else if (calculateNextDistance(tanks[tanks._id], tanks[tankKey]) < tankSize + 0.1 * tanks[tanks._id].x && tanks[tankKey].hp > 0){
           tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
           tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
           tankCollision = true;
