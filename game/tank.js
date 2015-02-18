@@ -37,7 +37,7 @@ function Tank(attr) {
 	var loader = new THREE.ObjectLoader();
 	loader.load('./Model/German-Tank/german.json',function(tankmodel){
 			tank.tanker = tankmodel;
-		  tank.tanker.position.y += 0.5;
+		  // tank.tanker.position.y += 0.5;
 		  tank.tanker.children.forEach(function(part,i){
 		  	if(i === 1){
 					tank.tanker.children[1].material.color.set(tank.color);			
