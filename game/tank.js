@@ -23,12 +23,17 @@ function Tank(x,y,z,color,speed) {
 
 	// ======>> Cube building
 	var loader = new THREE.ObjectLoader();
-	loader.load('./Model/German-Tank/german.json',function(tankmodel){
+	loader.load('./Model/tank1/german.json',function(tankmodel){
 			// console.log(tankmodel);
 			// tankmodel.rotation.y = Math.PI/2;
 			tank.tanker = tankmodel;
-			tank.tanker.rotation.y = Math.PI/2;
+			// tank.tanker.rotation.y = Math.PI/2;
+			// for (var i = 0; i < tank.tanker.children - 1; i++){
+			// 	tank.tanker.children[i].material.color = tank.color;
+			// }
 		  map.scene.add(tank.tanker);
+		  tank.tanker.position.y += 0.5
+		  
 	})
 	// tank.tanker = new THREE.Mesh(new THREE.BoxGeometry(tank.x, tank.y, tank.z), tank.material.tank );
 
@@ -37,9 +42,9 @@ function Tank(x,y,z,color,speed) {
 	// Tank fire
 	tank.fire = function(direction){
 		bullet = Bullet(-Math.sin(direction), -Math.cos(direction), 10, this.tanker.position);
-		bullet.bulleter.position.x = this.tanker.position.x - Math.cos(direction);
+		bullet.bulleter.position.x = this.tanker.position.x - Math.cos(direction)*2;
 		bullet.bulleter.position.y = this.tanker.position.y;
-		bullet.bulleter.position.z = this.tanker.position.z - Math.sin(direction);
+		bullet.bulleter.position.z = this.tanker.position.z - Math.sin(direction)*2;
 		return bullet;
 	};
 

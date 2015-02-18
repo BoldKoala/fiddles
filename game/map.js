@@ -10,7 +10,7 @@ function Map(x, y, step, brightness) {
 
 	// ====== Materials =======
 	map.material = {
-		floor : new THREE.MeshLambertMaterial({color: 'gray'}),
+		floor : new THREE.MeshLambertMaterial({color: 'blue'}),
 		line  : new THREE.LineBasicMaterial({color: 'green'}),
 		tank  : new THREE.MeshLambertMaterial({color:'blue'})
 	};

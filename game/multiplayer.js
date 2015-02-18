@@ -71,7 +71,8 @@ var eventHandlers = {
 		var r = codes % Math.floor(Math.random()*256);
 		var g = codes % Math.floor(Math.random()*256);
 		var b = codes % Math.floor(Math.random()*256);
-		var rgb = 'rgb('+r+','+g+','+b+')';
+		// var rgb = 'rgb('+r+','+g+','+b+')';
+		rgb = {"r":r, "g":g, "b":b}
 
 		tanks[id] = Tank(1,1,1, rgb, 0.1);
 
