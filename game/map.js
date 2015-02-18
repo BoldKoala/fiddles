@@ -10,15 +10,27 @@ function Map(x, y, step, brightness) {
 
 	// ====== Materials =======
 	map.material = {
-		floor : new THREE.MeshLambertMaterial({color: 'gray'}),
+		floor : new THREE.MeshLambertMaterial({ 
+			map: THREE.ImageUtils.loadTexture('./Model/Map/DirtGroundCracks.jpg')
+		}),
+		// floor : new THREE.MeshLambertMaterial({color: 'gray'}),
 		line  : new THREE.LineBasicMaterial({color: 'green'}),
 		tank  : new THREE.MeshLambertMaterial({color:'blue'})
 	};
+
+	// // ====== Texture ======
+	// var mapTexture = function(){
+	// 	// var url = ['./Model/Map/texture1.jpg'];
+	// 	return new THREE.MeshLambertMaterial({ 
+	// 		map: THREE.ImageUtils.loadTexture('./Model/Map/texture1.jpg')
+	// 	})
+	// }
 
 
 	// ====== Floor building ========
 	map.floor = new THREE.Mesh(new THREE.PlaneGeometry(map.x,map.y), map.material.floor);
 	map.floor.rotation.x = -Math.PI/2;
+	// map.floor.material = mapTexture;
 	map.scene.add(map.floor);
 
 	// ======>> Add light source
