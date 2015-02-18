@@ -12,11 +12,11 @@ var renderer = new THREE.WebGLRenderer({antialias: true});
 var map = Map(50,50,3,1.2);
 var tanks = {};
 var bullets = [];
-var testTower1 = createOBJ(0,0,0)
-var testTower2 = createOBJ(map.x/4, 0, map.y/4)
-var testTower3 = createOBJ(map.x/4, 0, -map.y/4)
-var testTower4 = createOBJ(-map.x/4, 0, map.y/4)
-var testTower5 = createOBJ(-map.x/4, 0, -map.y/4)
+var testTower1 = createOBJ(0,0,0);
+var testTower2 = createOBJ(map.x/4, 0, map.y/4);
+var testTower3 = createOBJ(map.x/4, 0, -map.y/4);
+var testTower4 = createOBJ(-map.x/4, 0, map.y/4);
+var testTower5 = createOBJ(-map.x/4, 0, -map.y/4);
 var towers = {
   tower1: testTower1,
   tower2: testTower2,

@@ -18,19 +18,9 @@ function Map(x, y, step, brightness) {
 		tank  : new THREE.MeshLambertMaterial({color:'blue'})
 	};
 
-	// // ====== Texture ======
-	// var mapTexture = function(){
-	// 	// var url = ['./Model/Map/texture1.jpg'];
-	// 	return new THREE.MeshLambertMaterial({ 
-	// 		map: THREE.ImageUtils.loadTexture('./Model/Map/texture1.jpg')
-	// 	})
-	// }
-
-
 	// ====== Floor building ========
 	map.floor = new THREE.Mesh(new THREE.PlaneGeometry(map.x,map.y), map.material.floor);
 	map.floor.rotation.x = -Math.PI/2;
-	// map.floor.material = mapTexture;
 	map.scene.add(map.floor);
 
 	// ======>> Add light source
@@ -48,15 +38,15 @@ function Map(x, y, step, brightness) {
 	map.scene.add(map.light4);
 
 	// ====== Grid building =========
-	map.line = new THREE.Geometry();
+	// map.line = new THREE.Geometry();
 
-	for( var i = -map.x + 20; i <= map.x - 20; i += map.step ){
-	  map.line.vertices.push(new THREE.Vector3( -map.x + 20, -0.1, i ));
-	  map.line.vertices.push(new THREE.Vector3( map.x - 20, -0.1, i ));
-	  map.line.vertices.push(new THREE.Vector3( i, -0.1, -map.x + 20 ));
-	  map.line.vertices.push(new THREE.Vector3( i, -0.1, map.x - 20 ));
+	// for( var i = -map.x + 20; i <= map.x - 20; i += map.step ){
+	//   map.line.vertices.push(new THREE.Vector3( -map.x + 20, -0.1, i ));
+	//   map.line.vertices.push(new THREE.Vector3( map.x - 20, -0.1, i ));
+	//   map.line.vertices.push(new THREE.Vector3( i, -0.1, -map.x + 20 ));
+	//   map.line.vertices.push(new THREE.Vector3( i, -0.1, map.x - 20 ));
 		// map.scene.add(new THREE.Line( map.line, map.material.line, THREE.LinePieces));
-	}
+	// }
 	// map.scene.add(map.line)
 
 	return map;

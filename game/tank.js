@@ -1,12 +1,6 @@
 
 function Tank(attr) {
-  //Texture function
-	var texture = function(i){
-		var url = ['./Model/German-Tank/Track.jpg', './Model/German-Tank/Turret.jpg','./Model/German-Tank/Turret 2.jpg','./Model/German-Tank/Body 2.jpg','./Model/German-Tank/Body 1.jpg'];
-		return new THREE.MeshLambertMaterial({ 
-			map: THREE.ImageUtils.loadTexture(url[i])
-		})
-	}
+
 	var tank = {};
 
 	tank.x = attr.x;
@@ -42,7 +36,8 @@ function Tank(attr) {
 		  	if(i === 1){
 					tank.tanker.children[1].material.color.set(tank.color);			
 		  	} else if (i < 5){
-					tank.tanker.children[i].material = texture(i);		  	
+					// tank.tanker.children[i].material = texture(i);		  	
+					tank.tanker.children[i].material = TankTexture[i];		  	
 		  	}
 		  	tank.tanker.children[i].scale.set(tank.x, tank.y, tank.z);
 		  })
