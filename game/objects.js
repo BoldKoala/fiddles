@@ -1,5 +1,5 @@
 function createOBJ(x, y, z) {
-  var objUrl = ['./Model/objects/castle-tower.scene/DRIFTWD.JPG', './Model/objects/castle-tower.scene/wall.JPG', './Model/objects/castle-tower.scene/PLATEOX2.JPG', './Model/objects/castle-tower.scene/STUCCO8.JPG', './Model/objects/castle-tower.scene/TUTSHNGL.JPG'];
+  var objUrl = ['./Model/Objects/castle-tower.scene/DRIFTWD.JPG', './Model/Objects/castle-tower.scene/wall.JPG', './Model/Objects/castle-tower.scene/PLATEOX2.JPG', './Model/Objects/castle-tower.scene/STUCCO8.JPG', './Model/Objects/castle-tower.scene/TUTSHNGL.JPG'];
   var OBJTexture = function(i){
     var texture = THREE.ImageUtils.loadTexture(objUrl[i]);
         texture.wrapS = THREE.RepeatWrapping;
@@ -14,7 +14,7 @@ function createOBJ(x, y, z) {
   var OBJ = {};
 
   var loader = new THREE.ObjectLoader();
-  loader.load('./Model/objects/castle-tower.scene/castle-tower.json',function(OBJModel){
+  loader.load('./Model/Objects/castle-tower.scene/castle-tower.json',function(OBJModel){
       OBJ.model = OBJModel;
       OBJ.model.scale.set(0.02, 0.02, 0.02);
       OBJ.model.children[0].material  = OBJTexture(3);

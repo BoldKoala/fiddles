@@ -285,16 +285,20 @@ function calculateCurrentDistance(tank1, tank2){
 }
 
 function calculateNextTowerDistance(tank, tower){
-  x1 = tank.tanker.position.x + Math.cos(tank.direction) * tank.currentSpeed;
-  x2 = tower.model.position.x;
-  z1 = tank.tanker.position.z + Math.sin(tank.direction) * tank.currentSpeed;
-  z2 = tower.model.position.z;
-  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+  if(tank.tanker && tower.model){   
+    x1 = tank.tanker.position.x + Math.cos(tank.direction) * tank.currentSpeed;
+    x2 = tower.model.position.x;
+    z1 = tank.tanker.position.z + Math.sin(tank.direction) * tank.currentSpeed;
+    z2 = tower.model.position.z;
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+  }
 }
 function calculateCurrentTowerDistance(tank, tower){
-  x1 = tank.tanker.position.x;
-  x2 = tower.model.position.x;
-  z1 = tank.tanker.position.z;
-  z2 = tower.model.position.z;
-  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+  if(tank.tanker && tower.model){
+    x1 = tank.tanker.position.x;
+    x2 = tower.model.position.x;
+    z1 = tank.tanker.position.z;
+    z2 = tower.model.position.z;
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+  }
 }
