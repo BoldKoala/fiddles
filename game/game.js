@@ -45,7 +45,7 @@ document.body.appendChild( renderer.domElement );
 //Add control handler
 window.onkeydown = function(d){
   //Tank Control
-  if(tanks._id){
+  if(tanks._id && tanks[tanks._id].tanker){
     if(tanks[tanks._id].hp > 0){
       keyDown(d, tanks);
     }
@@ -59,7 +59,7 @@ window.onkeydown = function(d){
 
 window.onkeyup = function(d){
   //Tank Control
-  if(tanks._id){
+  if(tanks._id && tanks[tanks._id].tanker){
     if(tanks[tanks._id].hp > 0){
       keyUp(d,tanks);
     }
@@ -67,7 +67,12 @@ window.onkeyup = function(d){
 };
 
 //Invoke Rendering function
-render();
+document.getElementById('loading').style.display = 'inline-block';          
+
+setTimeout(function(){
+  render();
+  document.getElementById('loading').style.display = 'none'; 
+},5000)
 
 // Start of render and animation
 function render() {
@@ -97,7 +102,7 @@ function updateBullets() {
   for(var i = 0; i<bullets.length; i++){
     
     bullets[i].move();
-    bullets[i].hit(tanks,function(from, to, bullet){
+    bullets[i].hit(tanks,towers,function(from, to, bullet){
       if(to === tanks._id){
         multiplayer.hit(from,to);
         tanks[tanks._id].hp--;
@@ -112,7 +117,7 @@ function updateBullets() {
             document.getElementById('dead').style.display = 'none';          
             map.scene.add(tanks[tanks._id].tanker)
           },5000)
-        } else {
+        } else if(to !== 'Tower'){
           console.log(from+" hit "+to);
           document.getElementById('tank-hp').innerHTML = tanks[tanks._id].hp;
         }

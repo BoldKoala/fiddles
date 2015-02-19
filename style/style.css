@@ -22,7 +22,7 @@ canvas {
 	display: inline-block;
 }
 
-#dead {
+#dead, #loading {
 	color: red;
 	height: 100%;
 	width: 100%;
