@@ -19,7 +19,7 @@ function Map(x, y, step, brightness) {
 	};
 
 	// ====== Floor building ========
-	map.floor = new THREE.Mesh(new THREE.PlaneGeometry(map.x,map.y), map.material.floor);
+	map.floor = new THREE.Mesh(new THREE.PlaneBufferGeometry(map.x,map.y), map.material.floor);
 	map.floor.rotation.x = -Math.PI/2;
 	map.scene.add(map.floor);
 

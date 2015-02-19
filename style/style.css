@@ -33,3 +33,10 @@ canvas {
 	font-size: 50px;
 	display: none;
 }
+
+#loading {
+	top: 30%;
+	font-size: 25px;
+	color: white;
+	line-height: 0.5;
+}

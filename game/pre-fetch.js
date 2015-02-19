@@ -1,3 +1,5 @@
+
+
 //Pre-fetch Tower Texture
 var TowerTexture = [];
 

@@ -69,21 +69,19 @@ window.onkeyup = function(d){
 //Invoke Rendering function
 document.getElementById('loading').style.display = 'inline-block';          
 
-setTimeout(function(){
-  render();
-  document.getElementById('loading').style.display = 'none'; 
-},5000)
+render();
 
 // Start of render and animation
 function render() {
   requestAnimationFrame(render);
   timer = Date.now()
   map.light.position.set(-camera.position.x, camera.position.y, camera.position.z);
-  if(tanks._id){
+  if(tanks._id && tanks[tanks._id].tanker){
     //HP Bar
     if(INITIAL){ 
       document.getElementById('tank-color').style.backgroundColor = tanks[tanks._id].color;
       document.getElementById('tank-hp').innerHTML = tanks[tanks._id].hp;
+      document.getElementById('loading').style.display = 'none'; 
       INITIAL = false;
     }
     if(tanks[tanks._id].hp > 0 && tanks[tanks._id].tanker){
