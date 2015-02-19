@@ -146,7 +146,7 @@ function updateTanks() {
     }
 
     for (var towerKey in towers){
-      if (calculateCurrentTowerDistance(tanks[tanks._id], towers[towerKey]) <= towers[towerKey].collisionSize - 0.2){
+      if (calculateCurrentTowerDistance(tanks[tanks._id], towers[towerKey]) <= towers[towerKey].collisionSize - 0.17){
         tankCollision = false;
         // xTowerCollision = false;
         // zTowerCollision = false;
