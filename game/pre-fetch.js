@@ -22,6 +22,27 @@ var OBJTexture = function(i){
   })
 };
 
+var MapTexture = function(url){
+  var mapTexture = THREE.ImageUtils.loadTexture(url);
+
+  return new THREE.MeshLambertMaterial({ 
+    map: mapTexture
+  })
+};
+
+var WallTexture = function(url){
+  var mapTexture = THREE.ImageUtils.loadTexture(url);
+      mapTexture.wrapS = THREE.RepeatWrapping;
+      mapTexture.wrapT = THREE.RepeatWrapping;
+      mapTexture.repeat.set( 71, 5 );
+
+  return new THREE.MeshLambertMaterial({ 
+    map: mapTexture
+  })
+};
+
+
+
 
 objUrl.forEach(function(url,i){
   TowerTexture[i] = OBJTexture(i);

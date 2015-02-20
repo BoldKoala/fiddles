@@ -9,9 +9,12 @@ var INITIAL = true;
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 500 );
 var renderer = new THREE.WebGLRenderer({antialias: true});
 
-var map = Map(50,50,3,0.5);
+var map = Map(60,60,3,0.5);
 var tanks = {};
 var bullets = [];
+
+// ============ trees =============
+
 var testTower1 = createOBJ(0,0,0);
 var testTower2 = createOBJ(map.x/4, 0, map.y/4);
 var testTower3 = createOBJ(map.x/4, 0, -map.y/4);
