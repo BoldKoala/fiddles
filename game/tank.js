@@ -13,7 +13,12 @@ function Tank(attr) {
 	//direction system
 	tank.currentSpeed = 0;
 	tank.spin = 0
-	tank.direction = 0;
+	tank.direction = Math.PI/2;
+
+	//turret system
+	// tank.torretX = 0;
+	tank.torretY = 0;
+	tank.torretDirection = Math.PI/2;
 
 	//Fire state
 	tank.isFire = false;
@@ -38,8 +43,8 @@ function Tank(attr) {
   	}
   	tank.tanker.children[i].scale.set(tank.x, tank.y, tank.z);
   })
-  attr.onLoad(tank.tanker);
 
+  attr.onLoad(tank.tanker);
 	// Tank fire
 	tank.fire = function(direction){
 		bullet = Bullet(-Math.sin(direction), -Math.cos(direction), 10, this.tanker.position);
