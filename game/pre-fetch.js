@@ -80,8 +80,10 @@ for(var j = 0; j<10; j++){
 };
 
 var tfcounter = 0;
-var playTankFire = function(){
-  tankFire[tfcounter++].play();
+var playTankFire = function(proximity){
+  proximity = proximity || 100;
+
+  tankFire[tfcounter++].setVolume(proximity).play();
   if(tfcounter === 10){
     tfcounter = 0;
   }
