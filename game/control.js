@@ -21,13 +21,13 @@ function keyDown(d, tanks, POV) {
     tanks[tanks._id].isFire = true;
   }
 
-  //Left key
-  if(d.keyCode === 37){
-    tanks[tanks._id].torretY = -0.02;
-  }
   //Right key
   if(d.keyCode === 39){
     tanks[tanks._id].torretY = 0.02;
+  }
+  //Left key
+  if(d.keyCode === 37){
+    tanks[tanks._id].torretY = -0.02;
   }
   //Up key
   if(d.keyCode === 38){

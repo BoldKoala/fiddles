@@ -19,6 +19,7 @@ function Tank(attr) {
 	// tank.torretX = 0;
 	tank.torretY = 0;
 	tank.torretDirection = Math.PI/2;
+	tank.cameraDirection = Math.PI/2;
 
 	//Fire state
 	tank.isFire = false;

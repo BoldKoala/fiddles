@@ -196,6 +196,7 @@ function updateTanks() {
   if(tanks._id){
     tanks[tanks._id].direction += tanks[tanks._id].spin;
     tanks[tanks._id].torretDirection += tanks[tanks._id].torretY;
+    tanks[tanks._id].cameraDirection += tanks[tanks._id].spin+tanks[tanks._id].torretY;
 
     isTankCollide();
     isTowerCollide();
@@ -208,10 +209,7 @@ function updateTanks() {
 
     tanks[tanks._id].tanker.rotation.y = -tanks[tanks._id].direction;
 
-    // tanks[tanks._id].tanker.children[1].rotation.y = -tanks[tanks._id].turretDirection;
     tanks[tanks._id].tanker.children[2].rotation.y = -tanks[tanks._id].torretDirection + Math.PI;
-    // tanks[tanks._id].tanker.children[2].rotation.x += Math.cos(tanks[tanks._id].torretX);
-    // tanks[tanks._id].tanker.children[2].rotation.z += Math.sin(tanks[tanks._id].torretX);
 
     if(tanks[tanks._id].currentSpeed !== 0){
       tanks[tanks._id].isDriving = true;
@@ -227,6 +225,9 @@ function updateTanks() {
 function updatePOV() {
   if(tanks._id){
     if(POV === 'FPS'){ 
+      var dxCam = Math.cos(tanks[tanks._id].cameraDirection)
+      var dzCam = Math.sin(tanks[tanks._id].cameraDirection)
+
       var dx = (tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].torretDirection)*5) - camera.position.x;
       var dy = (tanks[tanks._id].tanker.position.y + 2) - camera.position.y;
       var dz = (tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].torretDirection)*5) - camera.position.z;
@@ -235,15 +236,12 @@ function updatePOV() {
       var rz = 0 - camera.rotation.z;
 
       if(LOCK){
-        camera.position.x = tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].torretDirection)*tanks[tanks._id].x*12;
+        camera.position.x = tanks[tanks._id].tanker.position.x + dxCam*tanks[tanks._id].x*12;
         camera.position.y = tanks[tanks._id].tanker.position.y + tanks[tanks._id].y * 6;
-        camera.position.z = tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].torretDirection)*tanks[tanks._id].z*12;
+        camera.position.z = tanks[tanks._id].tanker.position.z + dzCam*tanks[tanks._id].z*12;
 
-        // camera.position.x = tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].torretDirection)*tanks[tanks._id].x*12;
-        // camera.position.y = tanks[tanks._id].tanker.position.y + tanks[tanks._id].y * 6;
-        // camera.position.z = tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].torretDirection)*tanks[tanks._id].z*12;
         camera.rotation.x = 0;
-        camera.rotation.y = Math.PI/2-tanks[tanks._id].torretDirection;
+        camera.rotation.y = Math.PI/2-tanks[tanks._id].cameraDirection;
         camera.rotation.z = 0;
       } else if(Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(dz) < 1){
         LOCK = true;
@@ -304,7 +302,7 @@ function updateBulletsFired() {
   if(tanks._id){
     if(tanks[tanks._id].isFire && !tanks[tanks._id].noFire){
       tanks[tanks._id].noFire = true;
-      var bullet = tanks[tanks._id].fire(tanks[tanks._id].direction);
+      var bullet = tanks[tanks._id].fire(tanks[tanks._id].cameraDirection);
       bullet._id = tanks._id;
       bullets.push(bullet);
       bullet.fireSound(100);
@@ -313,7 +311,7 @@ function updateBulletsFired() {
         x: bullet.bulleter.position.x,
         y: bullet.bulleter.position.y,
         z: bullet.bulleter.position.z,
-        direction: tanks[tanks._id].direction,
+        direction: tanks[tanks._id].cameraDirection,
         id: bullet._id
       })
       setTimeout(function(){
