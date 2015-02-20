@@ -1,3 +1,4 @@
+var counter = 0;
 //define event handler
 var eventHandlers = {
 	//Messaging
@@ -24,6 +25,7 @@ var eventHandlers = {
 	//Remove disconnected tank
 	exit: function(id){
 		console.log(id," exited")
+		console.log('Currenlt there are '+ (--counter) +' users');
 		map.scene.remove(tanks[id].tanker);
 		delete tanks[id];
 	},
@@ -52,6 +54,7 @@ var eventHandlers = {
 				color:state.color,
 				speed: 0.1,
 				onLoad: function(d){
+					console.log('Currenlt there are '+ (++counter) +' users');
 					map.scene.add(d);
 					d.position.x = state.x;
 					d.position.y = state.y;
@@ -88,6 +91,7 @@ var eventHandlers = {
 			color:rgb, 
 			speed:0.1, 
 			onLoad:function(d){
+				console.log('Currenlt there are '+ (++counter) +' users');
 				map.scene.add(d);
 			}
 		});
