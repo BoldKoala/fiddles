@@ -33,10 +33,10 @@ function Map(x, y, step, brightness) {
 	map.scene.add(map.floorRight);
 
 	// ====== Wall building ========
-	map.wall1 = new THREE.Mesh(new THREE.BoxGeometry(1,5,61), map.material.wall);
-	map.wall2 = new THREE.Mesh(new THREE.BoxGeometry(1,5,61), map.material.wall);
-	map.wall3 = new THREE.Mesh(new THREE.BoxGeometry(61,5,1), map.material.wall);
-	map.wall4 = new THREE.Mesh(new THREE.BoxGeometry(61,5,1), map.material.wall);
+	map.wall1 = new THREE.Mesh(new THREE.BoxGeometry(1,5,51), map.material.wall);
+	map.wall2 = new THREE.Mesh(new THREE.BoxGeometry(1,5,51), map.material.wall);
+	map.wall3 = new THREE.Mesh(new THREE.BoxGeometry(51,5,1), map.material.wall);
+	map.wall4 = new THREE.Mesh(new THREE.BoxGeometry(51,5,1), map.material.wall);
 	map.wall1.position.x += map.x/2;
 	map.wall2.position.x -= map.x/2;
 	map.wall3.position.z += map.y/2;

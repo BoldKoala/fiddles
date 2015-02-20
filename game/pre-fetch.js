@@ -34,7 +34,7 @@ var WallTexture = function(url){
   var mapTexture = THREE.ImageUtils.loadTexture(url);
       mapTexture.wrapS = THREE.RepeatWrapping;
       mapTexture.wrapT = THREE.RepeatWrapping;
-      mapTexture.repeat.set( 71, 5 );
+      mapTexture.repeat.set( 51, 5 );
 
   return new THREE.MeshLambertMaterial({ 
     map: mapTexture

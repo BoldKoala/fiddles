@@ -9,7 +9,7 @@ var INITIAL = true;
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 500 );
 var renderer = new THREE.WebGLRenderer({antialias: true});
 
-var map = Map(60,60,3,0.5);
+var map = Map(50,50,3,0.5);
 var tanks = {};
 var bullets = [];
 
@@ -79,7 +79,7 @@ function render() {
   requestAnimationFrame(render);
   timer = Date.now()
   map.light.position.set(-camera.position.x, camera.position.y, camera.position.z);
-  map.sky.rotation.z += 0.00025;
+  // map.sky.rotation.z += 0.00025;
   if(tanks._id && tanks[tanks._id].tanker){
     //HP Bar
     if(INITIAL){ 
@@ -130,9 +130,7 @@ function updateBullets() {
 }
 
 function isTankCollide(){
-  var tankCollision = false;
-  
-  for (var tankKey in tanks){
+    for (var tankKey in tanks){
     if (tankKey !== "_id" && tankKey !== tanks._id){
       if (calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]) <= tanks[tanks._id].x * 5){
         tankCollision = false;
@@ -141,6 +139,20 @@ function isTankCollide(){
         tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
         tankCollision = true;
       }
+    }
+  }
+}
+
+function isTowerCollide () {
+  var tankCollision = false;
+
+  for (var towerKey in towers){
+    if (calculateCurrentTowerDistance(tanks[tanks._id], towers[towerKey]) <= towers[towerKey].collisionSize - 0.17){
+      tankCollision = false;
+    } else if (calculateNextTowerDistance(tanks[tanks._id], towers[towerKey]) < towers[towerKey].collisionSize){
+      tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+      tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+      tankCollision = towers[towerKey];
     }
   }
   if (tankCollision){
@@ -170,32 +182,19 @@ function isTankCollide(){
   }
 }
 
-function isTowerCollide () {
-  for (var towerKey in towers){
-    if (calculateCurrentTowerDistance(tanks[tanks._id], towers[towerKey]) <= towers[towerKey].collisionSize - 0.17){
-      tankCollision = false;
-    } else if (calculateNextTowerDistance(tanks[tanks._id], towers[towerKey]) < towers[towerKey].collisionSize){
-      tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-      tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-      tankCollision = towers[towerKey];
-    }
-  }
-}
-
 //Calculate tank movements
 function updateTanks() {
   if(tanks._id){
     tanks[tanks._id].direction += tanks[tanks._id].spin;
 
     isTankCollide();
+    isTowerCollide();
 
     if( tanks[tanks._id].direction >= Math.PI ){
       tanks[tanks._id].direction = -Math.PI;
     } else if( tanks[tanks._id].direction <= -Math.PI ){
       tanks[tanks._id].direction = Math.PI;
     }
-
-    isTowerCollide();
 
     tanks[tanks._id].tanker.rotation.y = -tanks[tanks._id].direction;
   }
