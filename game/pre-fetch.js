@@ -22,31 +22,38 @@ var OBJTexture = function(i){
   })
 };
 
-var MapTexture = function(url){
-  var mapTexture = THREE.ImageUtils.loadTexture(url);
-
-  return new THREE.MeshLambertMaterial({ 
-    map: mapTexture
-  })
-};
-
-var WallTexture = function(url){
-  var mapTexture = THREE.ImageUtils.loadTexture(url);
-      mapTexture.wrapS = THREE.RepeatWrapping;
-      mapTexture.wrapT = THREE.RepeatWrapping;
-      mapTexture.repeat.set( 51, 5 );
-
-  return new THREE.MeshLambertMaterial({ 
-    map: mapTexture
-  })
-};
-
-
-
-
 objUrl.forEach(function(url,i){
   TowerTexture[i] = OBJTexture(i);
 });
+
+
+//Pre fetch Map
+var mapTexture = function(url){
+  var mapTexture = THREE.ImageUtils.loadTexture(url);
+
+  return new THREE.MeshLambertMaterial({ 
+    map: mapTexture
+  })
+};
+
+
+var MapTexture = mapTexture('./Model/Map/DirtGroundCracks.jpg');
+
+//pre fetch wall
+var wallTexture = function(url){
+  var mapTexture = THREE.ImageUtils.loadTexture(url);
+      mapTexture.wrapS = THREE.RepeatWrapping;
+      mapTexture.wrapT = THREE.RepeatWrapping;
+      mapTexture.repeat.set( 61, 5 );
+
+  return new THREE.MeshLambertMaterial({ 
+    map: mapTexture
+  })
+};
+
+var WallTexture = wallTexture('./Model/Map/newMapTexture.jpg');
+
+
 
 //Pre-fetch Tower Texture
 var TankTexture = [];

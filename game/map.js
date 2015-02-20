@@ -13,30 +13,22 @@ function Map(x, y, step, brightness) {
 		sky : new THREE.MeshBasicMaterial({ 
 			map: THREE.ImageUtils.loadTexture('./Model/Map/sky.jpg')
 		}),
-		floor : MapTexture('./Model/Map/DirtGroundCracks.jpg'),
-		wall : WallTexture('./Model/Map/newMapTexture.jpg'),
+		floor : MapTexture,
+		wall : WallTexture,
 		line  : new THREE.LineBasicMaterial({color: 'green'}),
 		tank  : new THREE.MeshLambertMaterial({color:'blue'})
 	};
 
 	// ====== Floor building ========
 	map.floor = new THREE.Mesh(new THREE.PlaneBufferGeometry(map.x,map.y), map.material.floor);
-	map.floorLeft = new THREE.Mesh(new THREE.PlaneBufferGeometry(map.x,map.y), map.material.floor);
-	map.floorRight = new THREE.Mesh(new THREE.PlaneBufferGeometry(map.x,map.y), map.material.floor);
 	map.floor.rotation.x = -Math.PI/2;
-	map.floorLeft.rotation.x = -Math.PI/2;
-	map.floorLeft.position.z += map.y;
-	map.floorRight.rotation.x = -Math.PI/2;
-	map.floorRight.position.z -= map.y;
 	map.scene.add(map.floor);
-	map.scene.add(map.floorLeft);
-	map.scene.add(map.floorRight);
 
 	// ====== Wall building ========
-	map.wall1 = new THREE.Mesh(new THREE.BoxGeometry(1,5,51), map.material.wall);
-	map.wall2 = new THREE.Mesh(new THREE.BoxGeometry(1,5,51), map.material.wall);
-	map.wall3 = new THREE.Mesh(new THREE.BoxGeometry(51,5,1), map.material.wall);
-	map.wall4 = new THREE.Mesh(new THREE.BoxGeometry(51,5,1), map.material.wall);
+	map.wall1 = new THREE.Mesh(new THREE.BoxGeometry(1,5,61), map.material.wall);
+	map.wall2 = new THREE.Mesh(new THREE.BoxGeometry(1,5,61), map.material.wall);
+	map.wall3 = new THREE.Mesh(new THREE.BoxGeometry(61,5,1), map.material.wall);
+	map.wall4 = new THREE.Mesh(new THREE.BoxGeometry(61,5,1), map.material.wall);
 	map.wall1.position.x += map.x/2;
 	map.wall2.position.x -= map.x/2;
 	map.wall3.position.z += map.y/2;

@@ -9,7 +9,7 @@ var INITIAL = true;
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 500 );
 var renderer = new THREE.WebGLRenderer({antialias: true});
 
-var map = Map(50,50,3,0.5);
+var map = Map(60,60,3,0.5);
 var tanks = {};
 var bullets = [];
 
@@ -79,7 +79,7 @@ function render() {
   requestAnimationFrame(render);
   timer = Date.now()
   map.light.position.set(-camera.position.x, camera.position.y, camera.position.z);
-  // map.sky.rotation.z += 0.00025;
+  map.sky.rotation.z += 0.00025;
   if(tanks._id && tanks[tanks._id].tanker){
     //HP Bar
     if(INITIAL){ 

@@ -1,7 +1,7 @@
 function Bullet(dir1, dir2, speed, position) {
   var bullet = {};
 
-  bullet.radius = 0.1;
+  bullet.radius = 0.2;
   bullet.speed = speed;
   bullet.zSpeed = dir1 * speed;
   bullet.xSpeed = dir2 * speed;
@@ -9,7 +9,7 @@ function Bullet(dir1, dir2, speed, position) {
   bullet.hitTower = false;
 
   bullet.material = {
-    bullet: new THREE.MeshBasicMaterial({ color: 'orange' })
+    bullet: new THREE.MeshBasicMaterial({ color: 'red' })
   };
 
   // ======>> Bullet building
@@ -20,7 +20,6 @@ function Bullet(dir1, dir2, speed, position) {
       this.bulleter.position.z += this.zSpeed/10;
       this.bulleter.position.x += this.xSpeed/10;
     }
-    // this.hitTower = false;
   };
 
   bullet.hit = function(tanks,towers,cb){
@@ -43,7 +42,6 @@ function Bullet(dir1, dir2, speed, position) {
         if(dx < towers[towerKey].collisionSize/1.9 && dy < towers[towerKey].collisionSize/1.9 && dz < towers[towerKey].collisionSize/1.9 && !this.hitTower){
           this.hitTower = true;
           cb(this._id, 'Tower', this);
-          // map.scene.remove(this.bulleter)
         }
       }
 
