@@ -12,6 +12,9 @@ function Bullet(dir1, dir2, speed, position) {
     bullet: new THREE.MeshBasicMaterial({ color: 'red' })
   };
 
+
+  bullet.fireSound = playTankFire;
+
   // ======>> Bullet building
   bullet.bulleter = new THREE.Mesh(new THREE.SphereGeometry(bullet.radius), bullet.material.bullet );
 

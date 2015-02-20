@@ -36,7 +36,15 @@ var eventHandlers = {
     bullet.bulleter.position.x = pos.x;
     bullet.bulleter.position.y = pos.y;
     bullet.bulleter.position.z = pos.z;
+
+    var dx = tanks[tanks._id].tanker.position.x - pos.x;
+    var dz = tanks[tanks._id].tanker.position.z - pos.z;
+
+    var dxdz = Math.sqrt(dx*dx+dz*dz);
+    var proximity = (dxdz/50)*100;
+
     bullets.push(bullet);
+    bullet.fireSound(100-proximity);
     map.scene.add(bullet.bulleter);
     bullet._id = pos.id;
 
@@ -71,6 +79,7 @@ var eventHandlers = {
 			tanks[state.id].tanker.rotation.x = state.rx;
 			tanks[state.id].tanker.rotation.y = state.ry;
 			tanks[state.id].tanker.rotation.z = state.rz;
+			tanks[state.id].isDriving = state.isDriving;
 		}
 	},
 	//send tanks._id to socket id

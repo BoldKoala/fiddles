@@ -139,6 +139,15 @@ function isTankCollide(){
         tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
         tankCollision = true;
       }
+
+      var dxdz = calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]);
+
+      tanks[tankKey].driveSound.setVolume(100-((dxdz/50)*100))
+      if(tanks[tankKey].isDriving){
+        tanks[tankKey].driveSound.loop().play();
+      } else {
+        tanks[tankKey].driveSound.pause();
+      }
     }
   }
 }
@@ -198,10 +207,19 @@ function updateTanks() {
     } 
 
     tanks[tanks._id].tanker.rotation.y = -tanks[tanks._id].direction;
+
     // tanks[tanks._id].tanker.children[1].rotation.y = -tanks[tanks._id].turretDirection;
     tanks[tanks._id].tanker.children[2].rotation.y = -tanks[tanks._id].torretDirection + Math.PI;
     // tanks[tanks._id].tanker.children[2].rotation.x += Math.cos(tanks[tanks._id].torretX);
     // tanks[tanks._id].tanker.children[2].rotation.z += Math.sin(tanks[tanks._id].torretX);
+
+    if(tanks[tanks._id].currentSpeed !== 0){
+      tanks[tanks._id].isDriving = true;
+      tanks[tanks._id].driveSound.loop().play();
+    } else {
+      tanks[tanks._id].isDriving = false;
+      tanks[tanks._id].driveSound.pause();
+    }
   }
 }
 
@@ -274,7 +292,8 @@ function syncStates() {
         ry: tanks[tanks._id].tanker.rotation.y,
         rz: tanks[tanks._id].tanker.rotation.z,
         color:tanks[tanks._id].color,
-        id: tanks._id
+        id: tanks._id,
+        isDriving: tanks[tanks._id].isDriving
       }
     );
   }
@@ -288,7 +307,7 @@ function updateBulletsFired() {
       var bullet = tanks[tanks._id].fire(tanks[tanks._id].direction);
       bullet._id = tanks._id;
       bullets.push(bullet);
-      playTankFire();
+      bullet.fireSound(100);
       map.scene.add(bullet.bulleter);
       multiplayer.fire({
         x: bullet.bulleter.position.x,
