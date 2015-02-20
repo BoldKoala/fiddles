@@ -1,6 +1,6 @@
 //Pre-fetch sound
 var tankFire = [];
-for(var i = 0; i<10; i++){
+for(var j = 0; j<10; j++){
   tankFire.push(new buzz.sound('../Sound/tank-fire.wav'));
 };
 
