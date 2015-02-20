@@ -22,6 +22,7 @@ function keyDown(d, tanks, POV) {
   }
   //c
   if(d.keyCode === 67){
+    if(tanks[tanks._id].tanker.position.y < 0.1){    
       var counter = 0;
       setInterval(function(){
         if (counter < 50){
@@ -34,6 +35,7 @@ function keyDown(d, tanks, POV) {
           counter++
         }
       }, 10)
+    }
   }
 }
 
