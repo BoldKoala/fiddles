@@ -1,17 +1,3 @@
-//Pre-fetch sound
-var tankFire = [];
-for(var j = 0; j<10; j++){
-  tankFire.push(new buzz.sound('../Sound/tank-fire.wav'));
-};
-
-var tfcounter = 0;
-var playTankFire = function(){
-  tankFire[tfcounter++].play();
-  if(tfcounter === 10){
-    tfcounter = 0;
-  }
-}
-
 //Pre-fetch Tower Texture
 var TowerTexture = [];
 
@@ -86,3 +72,17 @@ var tankTexture = function(i){
 tankUrl.forEach(function(url,i){
   TankTexture[i] = tankTexture(i);
 })
+
+//Pre-fetch sound
+var tankFire = [];
+for(var j = 0; j<10; j++){
+  tankFire.push(new buzz.sound('../Sound/tank-fire.wav'));
+};
+
+var tfcounter = 0;
+var playTankFire = function(){
+  tankFire[tfcounter++].play();
+  if(tfcounter === 10){
+    tfcounter = 0;
+  }
+}
