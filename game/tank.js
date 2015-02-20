@@ -22,6 +22,9 @@ function Tank(attr) {
 	tank.material = {
 		tank: new THREE.MeshLambertMaterial({ color: tank.color })
 	};
+
+	tank.driveSound = new buzz.sound('../Sound/tank-driving-edited.ogg');
+
 	// ======>> Cube building
 	// tank.tanker = new THREE.Mesh(new THREE.BoxGeometry(tank.x, tank.y, tank.z), tank.material.tank );
 

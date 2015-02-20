@@ -37,6 +37,7 @@ var eventHandlers = {
     bullet.bulleter.position.y = pos.y;
     bullet.bulleter.position.z = pos.z;
     bullets.push(bullet);
+    playTankFire();
     map.scene.add(bullet.bulleter);
     bullet._id = pos.id;
 
@@ -71,6 +72,7 @@ var eventHandlers = {
 			tanks[state.id].tanker.rotation.x = state.rx;
 			tanks[state.id].tanker.rotation.y = state.ry;
 			tanks[state.id].tanker.rotation.z = state.rz;
+			tanks[state.id].isDriving = state.isDriving;
 		}
 	},
 	//send tanks._id to socket id

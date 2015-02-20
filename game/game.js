@@ -139,6 +139,14 @@ function isTankCollide(){
         tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
         tankCollision = true;
       }
+
+      if(tanks[tankKey].isDriving){
+        // tanks[tankKey].isDriving = true;
+        tanks[tankKey].driveSound.loop().play();
+      } else {
+        // tanks[tankKey].isDriving = false;
+        tanks[tankKey].driveSound.pause();
+      }
     }
   }
 }
@@ -197,6 +205,14 @@ function updateTanks() {
     }
 
     tanks[tanks._id].tanker.rotation.y = -tanks[tanks._id].direction;
+
+    if(tanks[tanks._id].currentSpeed !== 0){
+      tanks[tanks._id].isDriving = true;
+      tanks[tanks._id].driveSound.loop().play();
+    } else {
+      tanks[tanks._id].isDriving = false;
+      tanks[tanks._id].driveSound.pause();
+    }
   }
 }
 
@@ -265,7 +281,8 @@ function syncStates() {
         ry: tanks[tanks._id].tanker.rotation.y,
         rz: tanks[tanks._id].tanker.rotation.z,
         color:tanks[tanks._id].color,
-        id: tanks._id
+        id: tanks._id,
+        isDriving: tanks[tanks._id].isDriving
       }
     );
   }
