@@ -209,10 +209,10 @@ function updateTanks() {
 
     if(tanks[tanks._id].currentSpeed !== 0){
       tanks[tanks._id].isDriving = true;
-      // tanks[tanks._id].driveSound.loop().play();
+      tanks[tanks._id].driveSound.loop().play();
     } else {
       tanks[tanks._id].isDriving = false;
-      // tanks[tanks._id].driveSound.pause();
+      tanks[tanks._id].driveSound.pause();
     }
   }
 }
