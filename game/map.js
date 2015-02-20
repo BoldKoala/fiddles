@@ -13,7 +13,9 @@ function Map(x, y, step, brightness) {
 		floor : new THREE.MeshLambertMaterial({ 
 			map: THREE.ImageUtils.loadTexture('./Model/Map/DirtGroundCracks.jpg')
 		}),
-		// floor : new THREE.MeshLambertMaterial({color: 'gray'}),
+		sky : new THREE.MeshBasicMaterial({ 
+			map: THREE.ImageUtils.loadTexture('./Model/Map/sky.jpg')
+		}),
 		line  : new THREE.LineBasicMaterial({color: 'green'}),
 		tank  : new THREE.MeshLambertMaterial({color:'blue'})
 	};
@@ -22,6 +24,13 @@ function Map(x, y, step, brightness) {
 	map.floor = new THREE.Mesh(new THREE.PlaneBufferGeometry(map.x,map.y), map.material.floor);
 	map.floor.rotation.x = -Math.PI/2;
 	map.scene.add(map.floor);
+
+	// ====== Sky building ========
+	map.sky = new THREE.Mesh(new THREE.SphereGeometry(100,32,32), map.material.sky);
+	map.sky.material.side = THREE.DoubleSide;
+	map.sky.rotation.x = 14.12;
+	map.sky.position.y = -8;
+	map.scene.add(map.sky);
 
 	// ======>> Add light source
 	map.light  = new THREE.DirectionalLight(0xffffff,map.brightness);
@@ -36,18 +45,6 @@ function Map(x, y, step, brightness) {
 	map.scene.add(map.light2);
 	map.scene.add(map.light3);
 	map.scene.add(map.light4);
-
-	// ====== Grid building =========
-	// map.line = new THREE.Geometry();
-
-	// for( var i = -map.x + 20; i <= map.x - 20; i += map.step ){
-	//   map.line.vertices.push(new THREE.Vector3( -map.x + 20, -0.1, i ));
-	//   map.line.vertices.push(new THREE.Vector3( map.x - 20, -0.1, i ));
-	//   map.line.vertices.push(new THREE.Vector3( i, -0.1, -map.x + 20 ));
-	//   map.line.vertices.push(new THREE.Vector3( i, -0.1, map.x - 20 ));
-		// map.scene.add(new THREE.Line( map.line, map.material.line, THREE.LinePieces));
-	// }
-	// map.scene.add(map.line)
 
 	return map;
 }

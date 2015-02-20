@@ -9,7 +9,7 @@ var INITIAL = true;
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 500 );
 var renderer = new THREE.WebGLRenderer({antialias: true});
 
-var map = Map(50,50,3,1.2);
+var map = Map(50,50,3,0.5);
 var tanks = {};
 var bullets = [];
 var testTower1 = createOBJ(0,0,0);
@@ -76,6 +76,7 @@ function render() {
   requestAnimationFrame(render);
   timer = Date.now()
   map.light.position.set(-camera.position.x, camera.position.y, camera.position.z);
+  map.sky.rotation.z += 0.00025;
   if(tanks._id && tanks[tanks._id].tanker){
     //HP Bar
     if(INITIAL){ 
@@ -125,76 +126,22 @@ function updateBullets() {
   }
 }
 
-//Calculate tank movements
-function updateTanks() {
-  if(tanks._id){
-    tanks[tanks._id].direction += tanks[tanks._id].spin;
-    var tankCollision = false;
-    // var xTowerCollision = false;
-    // var zTowerCollision = false;
-
-    for (var tankKey in tanks){
-      if (tankKey !== "_id" && tankKey !== tanks._id){
-        if (calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]) <= tanks[tanks._id].x * 5){
-          tankCollision = false;
-        } else if (calculateNextDistance(tanks[tanks._id], tanks[tankKey]) < tanks[tanks._id].x * 5.1 && tanks[tankKey].hp > 0){
-          tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-          tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-          tankCollision = true;
-        }
-      }
-    }
-
-    for (var towerKey in towers){
-      if (calculateCurrentTowerDistance(tanks[tanks._id], towers[towerKey]) <= towers[towerKey].collisionSize - 0.17){
+function isTankCollide(){
+  var tankCollision = false;
+  
+  for (var tankKey in tanks){
+    if (tankKey !== "_id" && tankKey !== tanks._id){
+      if (calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]) <= tanks[tanks._id].x * 5){
         tankCollision = false;
-        // xTowerCollision = false;
-        // zTowerCollision = false;
-
-      } else if (calculateNextTowerDistance(tanks[tanks._id], towers[towerKey]) < towers[towerKey].collisionSize){
-        // if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction) * tanks[tanks._id].currentSpeed - towers[towerKey].model.position.x) < towers[towerKey].collisionSize) {
-        //   tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-        //   // tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-        //   // xTowerCollision = true;
-        // } 
-        // if (Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction) * tanks[tanks._id].currentSpeed - towers[towerKey].model.position.z) < towers[towerKey].collisionSize) {
-        //   // tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-        //   tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-        //   // zTowerCollision = true;
-        // }
-        // xTowerCollision = false;
-        // zTowerCollision = false;
+      } else if (calculateNextDistance(tanks[tanks._id], tanks[tankKey]) < tanks[tanks._id].x * 5.1 && tanks[tankKey].hp > 0){
         tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
         tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-        tankCollision = towers[towerKey];
+        tankCollision = true;
       }
     }
-
-
-    if( tanks[tanks._id].direction >= Math.PI ){
-      tanks[tanks._id].direction = -Math.PI;
-    } else if( tanks[tanks._id].direction <= -Math.PI ){
-      tanks[tanks._id].direction = Math.PI;
-    }
-
-    if (tankCollision){
-      if (Math.abs(tanks[tanks._id].tanker.position.x - tankCollision.model.position.x) <= Math.abs(tanks[tanks._id].tanker.position.z - tankCollision.model.position.z)) {
-        if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2-tanks[tanks._id].x*5){
-          tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-        }
-        if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2-tanks[tanks._id].z*5){
-          tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
-        }
-      }
-      if (Math.abs(tanks[tanks._id].tanker.position.x - tankCollision.model.position.x) >= Math.abs(tanks[tanks._id].tanker.position.z - tankCollision.model.position.z)){
-        if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2-tanks[tanks._id].x*5){
-          tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-        }
-        if (Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2-tanks[tanks._id].z*5){
-          tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
-        }
-      }
-    } else {
+  }
+  if (tankCollision){
+    if (Math.abs(tanks[tanks._id].tanker.position.x - tankCollision.model.position.x) <= Math.abs(tanks[tanks._id].tanker.position.z - tankCollision.model.position.z)) {
       if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2-tanks[tanks._id].x*5){
         tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
       }
@@ -202,8 +149,50 @@ function updateTanks() {
         tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
       }
     }
+    if (Math.abs(tanks[tanks._id].tanker.position.x - tankCollision.model.position.x) >= Math.abs(tanks[tanks._id].tanker.position.z - tankCollision.model.position.z)){
+      if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2-tanks[tanks._id].x*5){
+        tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+      }
+      if (Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2-tanks[tanks._id].z*5){
+        tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
+      }
+    }
+  } else {
+    if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2-tanks[tanks._id].x*5){
+      tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+    }
+    if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2-tanks[tanks._id].z*5){
+      tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
+    }
+  }
+}
 
+function isTowerCollide () {
+  for (var towerKey in towers){
+    if (calculateCurrentTowerDistance(tanks[tanks._id], towers[towerKey]) <= towers[towerKey].collisionSize - 0.17){
+      tankCollision = false;
+    } else if (calculateNextTowerDistance(tanks[tanks._id], towers[towerKey]) < towers[towerKey].collisionSize){
+      tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+      tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+      tankCollision = towers[towerKey];
+    }
+  }
+}
 
+//Calculate tank movements
+function updateTanks() {
+  if(tanks._id){
+    tanks[tanks._id].direction += tanks[tanks._id].spin;
+
+    isTankCollide();
+
+    if( tanks[tanks._id].direction >= Math.PI ){
+      tanks[tanks._id].direction = -Math.PI;
+    } else if( tanks[tanks._id].direction <= -Math.PI ){
+      tanks[tanks._id].direction = Math.PI;
+    }
+
+    isTowerCollide();
 
     tanks[tanks._id].tanker.rotation.y = -tanks[tanks._id].direction;
   }
