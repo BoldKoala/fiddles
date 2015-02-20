@@ -279,6 +279,7 @@ function updateBulletsFired() {
       var bullet = tanks[tanks._id].fire(tanks[tanks._id].direction);
       bullet._id = tanks._id;
       bullets.push(bullet);
+      playTankFire();
       map.scene.add(bullet.bulleter);
       multiplayer.fire({
         x: bullet.bulleter.position.x,
@@ -289,7 +290,7 @@ function updateBulletsFired() {
       })
       setTimeout(function(){
         tanks[tanks._id].noFire = false;
-      },250)
+      },2000)
       setTimeout(function(){
         map.scene.remove(bullets.shift().bulleter);
       },1000)

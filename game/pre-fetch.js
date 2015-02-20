@@ -1,4 +1,16 @@
+//Pre-fetch sound
+var tankFire = [];
+for(var i = 0; i<10; i++){
+  tankFire.push(new buzz.sound('../Sound/tank-fire.wav'));
+};
 
+var tfcounter = 0;
+var playTankFire = function(){
+  tankFire[tfcounter++].play();
+  if(tfcounter === 10){
+    tfcounter = 0;
+  }
+}
 
 //Pre-fetch Tower Texture
 var TowerTexture = [];
