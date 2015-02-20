@@ -20,6 +20,24 @@ function keyDown(d, tanks, POV) {
   if (d.keyCode === 32){
     tanks[tanks._id].isFire = true;
   }
+
+  //Left key
+  if(d.keyCode === 37){
+    tanks[tanks._id].torretY = -0.02;
+  }
+  //Right key
+  if(d.keyCode === 39){
+    tanks[tanks._id].torretY = 0.02;
+  }
+  //Up key
+  if(d.keyCode === 38){
+    tanks[tanks._id].torretX = 0.02;
+  }
+  //Down key
+  if(d.keyCode === 40){
+    tanks[tanks._id].torretX = -0.02;
+  }
+
   //c
   if(d.keyCode === 67){
     if(tanks[tanks._id].tanker.position.y < 0.1){    
@@ -54,10 +72,27 @@ function keyUp (d, tanks){
   }
   //A key
   if(d.keyCode === 65){
-    tanks[tanks._id].spin = 0;  
+    tanks[tanks._id].spin = 0;    
   }
   //space
   if (d.keyCode === 32){
     tanks[tanks._id].isFire = false;
+  }
+
+  //Left key
+  if(d.keyCode === 37){
+    tanks[tanks._id].torretY = 0;
+  }
+  //Right key
+  if(d.keyCode === 39){
+    tanks[tanks._id].torretY = 0;
+  }
+  //Up key
+  if(d.keyCode === 38){
+    tanks[tanks._id].torretX = 0;
+  }
+  //Down key
+  if(d.keyCode === 40){
+    tanks[tanks._id].torretX = 0;
   }
 }
