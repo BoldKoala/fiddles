@@ -76,7 +76,7 @@ tankUrl.forEach(function(url,i){
 //Pre-fetch sound
 var tankFire = [];
 for(var j = 0; j<10; j++){
-  tankFire.push(new buzz.sound('../Sound/tank-fire.wav'));
+  tankFire.push(new buzz.sound('../Sound/tank-fire.mp3'));
 };
 
 var tfcounter = 0;
