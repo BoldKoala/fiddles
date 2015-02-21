@@ -34,6 +34,7 @@ function Bullet(dir1, dir2, speed, position) {
           var dz = Math.abs(tanks[tank].tanker.position.z - this.bulleter.position.z) - (tanks[tank].x*5)/2.5;
           if(dx < tanks[tank].x && dy < tanks[tank].y && dz < tanks[tank].z && !this.isHit){
             this.isHit = true;
+            bulletExplosion(this.bulleter.position.x, this.bulleter.position.y, this.bulleter.position.z);
             cb(this._id, tank, this);
           }
         }
@@ -44,6 +45,7 @@ function Bullet(dir1, dir2, speed, position) {
         var dz = Math.abs(towers[towerKey].model.position.z - this.bulleter.position.z);
         if(dx < towers[towerKey].collisionSize/1.9 && dy < towers[towerKey].collisionSize/1.9 && dz < towers[towerKey].collisionSize/1.9 && !this.hitTower){
           this.hitTower = true;
+          bulletExplosion(this.bulleter.position.x, this.bulleter.position.y, this.bulleter.position.z);
           cb(this._id, 'Tower', this);
         }
       }
