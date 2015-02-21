@@ -14,7 +14,7 @@ var multiplayer = Multiplayer(map,tanks);
 var socket = multiplayer.socket;
 
 //Instantiate game assets
-var map = Map(60,60,3,0.5);
+var map = Map(60,60,1,0.5);
 var tanks = {};
 var bullets = [];
 
@@ -37,7 +37,8 @@ for(var tower in towers){
 //Set renderer size
 renderer.setSize( WIDTH, HEIGHT );
 renderer.shadowMapEnabled = true;
-renderer.shadowMapType = THREE.BasicShadowMap;
+// renderer.shadowMapType = THREE.BasicShadowMap;
+// renderer.shadowMapSoft = true;
 
 //Initialize Camera
 camera.position.y = 40;
@@ -81,7 +82,6 @@ render();
 function render() {
   requestAnimationFrame(render);
   timer = Date.now()
-  map.light.position.set(-camera.position.x, camera.position.y, camera.position.z);
   map.sky.rotation.z += 0.00025;
   if(tanks._id && tanks[tanks._id].tanker){
     //HP Bar

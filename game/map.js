@@ -20,8 +20,9 @@ function Map(x, y, step, brightness) {
 	};
 
 	// ====== Floor building ========
-	map.floor = new THREE.Mesh(new THREE.PlaneBufferGeometry(map.x,map.y), map.material.floor);
+	map.floor = new THREE.Mesh(new THREE.PlaneGeometry(map.x,map.y), map.material.floor);
 	map.floor.rotation.x = -Math.PI/2;
+	map.floor.receiveShadow = true;
 	map.scene.add(map.floor);
 
 	// ====== Wall building ========
@@ -29,6 +30,14 @@ function Map(x, y, step, brightness) {
 	map.wall2 = new THREE.Mesh(new THREE.BoxGeometry(1,5,61), map.material.wall);
 	map.wall3 = new THREE.Mesh(new THREE.BoxGeometry(61,5,1), map.material.wall);
 	map.wall4 = new THREE.Mesh(new THREE.BoxGeometry(61,5,1), map.material.wall);
+	map.wall1.receiveShadow = true;
+	map.wall2.receiveShadow = true;
+	map.wall3.receiveShadow = true;
+	map.wall4.receiveShadow = true;
+	map.wall1.castShadow = true;
+	map.wall2.castShadow = true;
+	map.wall3.castShadow = true;
+	map.wall4.castShadow = true;
 	map.wall1.position.x += map.x/2;
 	map.wall2.position.x -= map.x/2;
 	map.wall3.position.z += map.y/2;
@@ -50,18 +59,16 @@ function Map(x, y, step, brightness) {
 	map.scene.add(map.sky);
 
 	// ======>> Add light source
-	map.light  = new THREE.DirectionalLight(0xffffff,map.brightness);
-	map.light2 = new THREE.DirectionalLight(0xffffff,map.brightness);
-	map.light3 = new THREE.DirectionalLight(0xffffff,map.brightness);
-	map.light4 = new THREE.DirectionalLight(0xffffff,map.brightness);
-	map.light.position.set(20,10,20);
-	map.light2.position.set(-20,10,20);
-	map.light3.position.set(-20,10,-20);	
-	map.light4.position.set(20,10,-0);	
+	map.light  = new THREE.SpotLight(0xffffff,map.brightness);
+	map.light.position.set(60,60,0);
+	map.light.castShadow = true;
+	// map.light.shadowCameraVisible = true;
+	map.light.shadowDarkness = 0.35;
+	map.light.shadowCameraFar = 1000;
+	// map.light.shadowCameraNear = 0.1;
+
 	map.scene.add(map.light);
-	map.scene.add(map.light2);
-	map.scene.add(map.light3);
-	map.scene.add(map.light4);
+	map.scene.add(new THREE.AmbientLight(0x666666));
 
 	return map;
 }

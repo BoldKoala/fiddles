@@ -20,6 +20,12 @@ function createOBJ(x, y, z) {
   OBJ.model.position.x = x;
   OBJ.model.position.y = y;
   OBJ.model.position.z = z;
+
+  OBJ.model.castShadow = true;
+
+  for(var i = 0; i<OBJ.model.children.length; i++){
+    OBJ.model.children[i].castShadow = true;
+  }
     
   // ======= Collison ========
   OBJ.collisionSize = 3;

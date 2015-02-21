@@ -46,6 +46,8 @@ function Tank(attr) {
 			tank.tanker.children[i].material = TankTexture[i];		  	
   	}
   	tank.tanker.children[i].scale.set(tank.x, tank.y, tank.z);
+  	tank.tanker.children[i].receiveShadow = true;
+  	tank.tanker.children[i].castShadow = true;
   })
 
   attr.onLoad(tank.tanker);

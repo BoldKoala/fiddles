@@ -29,7 +29,7 @@ objUrl.forEach(function(url,i){
 var mapTexture = function(url){
   var mapTexture = THREE.ImageUtils.loadTexture(url);
 
-  return new THREE.MeshLambertMaterial({ 
+  return new THREE.MeshPhongMaterial({ 
     map: mapTexture
   })
 };
