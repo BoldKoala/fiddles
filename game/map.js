@@ -1,5 +1,5 @@
 function Map(x, y, step, brightness) {
-
+	
 	var map = {};
 
 	map.scene      = new THREE.Scene();
@@ -26,6 +26,7 @@ function Map(x, y, step, brightness) {
 	map.scene.add(map.floor);
 
 	// ====== Wall building ========
+	
 	map.wall1 = new THREE.Mesh(new THREE.BoxGeometry(1,5,61), map.material.wall);
 	map.wall2 = new THREE.Mesh(new THREE.BoxGeometry(1,5,61), map.material.wall);
 	map.wall3 = new THREE.Mesh(new THREE.BoxGeometry(61,5,1), map.material.wall);

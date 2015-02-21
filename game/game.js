@@ -73,6 +73,14 @@ window.onkeyup = function(d){
   }
 };
 
+document.getElementById('tank-color').addEventListener('click',function(){
+    POV = POV === 'FPS' ? 'Birdeye' : 'FPS';
+})
+
+document.getElementsByTagName('canvas')[0].addEventListener('click',function(d){
+  tanks[tanks._id].currentSpeed = tanks[tanks._id].currentSpeed ? 0 :-tanks[tanks._id].speed;
+})
+
 //Invoke Rendering function
 render();
 
