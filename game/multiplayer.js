@@ -57,7 +57,7 @@ var eventHandlers = {
 			tanks[state.id] = Tank({
 				x:0.25,
 				y:0.25,
-				z:0.25, 
+				z:0.25,
 				color:state.color,
 				speed: 0.1,
 				onLoad: function(d){
@@ -96,12 +96,14 @@ var eventHandlers = {
 		tanks[id] = Tank({
 			x:0.25,
 			y:0.25,
-			z:0.25, 
-			color:rgb, 
-			speed:0.1, 
+			z:0.25,
+			color:rgb,
+			speed:0.1,
 			onLoad:function(d){
 				console.log('Currenlt there are '+ (++counter) +' users');
 				map.scene.add(d);
+				d.position.x = Math.floor(Math.random()*56)-28;
+				d.position.z = Math.floor(Math.random()*56)-28;
 			}
 		});
 
