@@ -2,11 +2,21 @@ function keyDown(d, tanks, POV) {
 	// console.log(d.keyCode);
   //W key
   if(d.keyCode === 87){
-    tanks[tanks._id].currentSpeed = -tanks[tanks._id].speed;
+    if (tanks[tanks._id].currentSpeed < -tanks[tanks._id].speed){
+      tanks[tanks._id].currentSpeed = -tanks[tanks._id].speed
+    } else {
+      tanks[tanks._id].currentSpeed -= 0.005;
+    }
+    // tanks[tanks._id].currentSpeed = -tanks[tanks._id].speed;
   }
   //S key
   if(d.keyCode === 83){
-    tanks[tanks._id].currentSpeed = tanks[tanks._id].speed;
+    if (tanks[tanks._id].currentSpeed > tanks[tanks._id].speed){
+      tanks[tanks._id].currentSpeed = tanks[tanks._id].speed
+    } else {
+      tanks[tanks._id].currentSpeed += 0.005;
+    }
+    // tanks[tanks._id].currentSpeed = tanks[tanks._id].speed;
   }
   //D key
   if(d.keyCode === 68){
@@ -61,10 +71,12 @@ function keyUp (d, tanks){
 	//W ke
   if(d.keyCode === 87){
     tanks[tanks._id].currentSpeed = 0;
+    // tanks[tanks._id].currentSpeed = 0;
   }
   //S ke
   if(d.keyCode === 83){
     tanks[tanks._id].currentSpeed = 0;
+    // tanks[tanks._id].currentSpeed = 0;
   }
   //D key
   if(d.keyCode === 68){
