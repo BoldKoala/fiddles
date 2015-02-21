@@ -1,4 +1,4 @@
-//Pre-fetch Tower Texture
+// ===================== Pre-fetch Tower Texture =====================
 var TowerTexture = [];
 
 var objUrl = [
@@ -25,7 +25,7 @@ objUrl.forEach(function(url,i){
 });
 
 
-//Pre fetch Map
+// ===================== Pre fetch Map =====================
 var mapTexture = function(url){
   var mapTexture = THREE.ImageUtils.loadTexture(url);
 
@@ -53,7 +53,7 @@ var WallTexture = wallTexture('./Model/Map/newMapTexture.jpg');
 
 
 
-//Pre-fetch Tower Texture
+// ===================== Pre-fetch Tower Texture =====================
 var TankTexture = [];
 var tankUrl = [
   './Model/German-Tank/Track.jpg', 
@@ -73,7 +73,7 @@ tankUrl.forEach(function(url,i){
   TankTexture[i] = tankTexture(i);
 })
 
-//Pre-fetch sound
+// ===================== Pre-fetch sound =====================
 var tankFire = [];
 for(var j = 0; j<10; j++){
   tankFire.push(new buzz.sound('../Sound/tank-fire.mp3'));

@@ -20,8 +20,7 @@ function createOBJ(x, y, z) {
   OBJ.model.position.x = x;
   OBJ.model.position.y = y;
   OBJ.model.position.z = z;
-  map.scene.add(OBJ.model);
-  
+    
   // ======= Collison ========
   OBJ.collisionSize = 3;
 

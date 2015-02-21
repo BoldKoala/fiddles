@@ -31,7 +31,7 @@ function Tank(attr) {
 
 	tank.driveSound = new buzz.sound('../Sound/tank-driving-edited.ogg');
 
-	// ======>> Cube building
+	// ====== Cube building (Legacy Code) ======
 	// tank.tanker = new THREE.Mesh(new THREE.BoxGeometry(tank.x, tank.y, tank.z), tank.material.tank );
 
 	// Position Cube
@@ -57,6 +57,28 @@ function Tank(attr) {
 		bullet.bulleter.position.z = this.tanker.position.z - Math.sin(direction)*2;
 		return bullet;
 	};
+
+	//tank flip
+	tank.flip = function(){
+		var tankctx = this;
+		var flip = setInterval(function(){
+			tankctx.tanker.rotation.x += 0.2;
+			if(tankctx.tanker.rotation.x > Math.PI/2){
+				tankctx.tanker.position.y -= 0.2;
+			} else {
+				tankctx.tanker.position.y += 0.4;
+			}
+			if(tankctx.tanker.rotation.x > Math.PI){
+				clearInterval(flip);
+				tankctx.tanker.position.y = attr.y*2;
+			}
+		},30)
+	}
+
+	tank.restore = function(){
+		this.tanker.rotation.x = 0;
+		this.tanker.position.y = 0;
+	}
 
 	return tank;
 }

@@ -14,12 +14,11 @@ var eventHandlers = {
 	},
 	killed: function(id){
 		console.log(id + ' is dead');
-		map.scene.remove(tanks[id].tanker);
+		tanks[id].flip();
 		tanks[id].hp = 0;
-		// delete tanks[id];
 		setTimeout(function(){
 			tanks[id].hp = 10;
-			map.scene.add(tanks[id].tanker)
+			tanks[id].restore();
 		},5000)
 	},
 	//Remove disconnected tank
@@ -80,6 +79,7 @@ var eventHandlers = {
 			tanks[state.id].tanker.rotation.y = state.ry;
 			tanks[state.id].tanker.rotation.z = state.rz;
 			tanks[state.id].isDriving = state.isDriving;
+			tanks[state.id].tanker.children[2].rotation.y = state.torretY;
 		}
 	},
 	//send tanks._id to socket id

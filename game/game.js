@@ -9,11 +9,14 @@ var INITIAL = true;
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 500 );
 var renderer = new THREE.WebGLRenderer({antialias: true});
 
+//Add Multiplayer 
+var multiplayer = Multiplayer(map,tanks);
+var socket = multiplayer.socket;
+
+//Instantiate game assets
 var map = Map(60,60,3,0.5);
 var tanks = {};
 var bullets = [];
-
-// ============ towers =============
 
 var testTower1 = createOBJ(0,0,0);
 var testTower2 = createOBJ(map.x/4, 0, map.y/4);
@@ -27,9 +30,9 @@ var towers = {
   tower4: testTower4,
   tower5: testTower5
 }
-
-var multiplayer = Multiplayer(map,tanks);
-var socket = multiplayer.socket;
+for(var tower in towers){
+  map.scene.add(towers[tower].model);
+}
 
 //Set renderer size
 renderer.setSize( WIDTH, HEIGHT );
@@ -48,7 +51,7 @@ document.body.appendChild( renderer.domElement );
 //Add control handler
 window.onkeydown = function(d){
   //Tank Control
-  if(tanks._id && tanks[tanks._id].tanker){
+  if(tanks._id && tanks[tanks._id].tanker && tanks[tanks._id].hp > 0){
     if(tanks[tanks._id].hp > 0){
       keyDown(d, tanks);
     }
@@ -62,7 +65,7 @@ window.onkeydown = function(d){
 
 window.onkeyup = function(d){
   //Tank Control
-  if(tanks._id && tanks[tanks._id].tanker){
+  if(tanks._id && tanks[tanks._id].tanker  && tanks[tanks._id].hp > 0){
     if(tanks[tanks._id].hp > 0){
       keyUp(d,tanks);
     }
@@ -70,9 +73,9 @@ window.onkeyup = function(d){
 };
 
 //Invoke Rendering function
-document.getElementById('loading').style.display = 'inline-block';          
-
 render();
+
+// ====================== Utility Functions =======================
 
 // Start of render and animation
 function render() {
@@ -88,7 +91,7 @@ function render() {
       document.getElementById('loading').style.display = 'none'; 
       INITIAL = false;
     }
-    if(tanks[tanks._id].hp > 0 && tanks[tanks._id].tanker){
+    if(tanks[tanks._id].tanker){
       updateBullets();
       updateTanks();
       updatePOV();
@@ -109,15 +112,20 @@ function updateBullets() {
         multiplayer.hit(from,to);
         tanks[tanks._id].hp--;
         if(tanks[tanks._id].hp === 0){
+          tanks[tanks._id].flip();
+          tanks[tanks._id].spin = 0;
+          tanks[tanks._id].currentSpeed = 0;
+          tanks[tanks._id].isFire = false;
+          tanks[tanks._id].torretY = 0;
+          tanks[tanks._id].torretX = 0;
           document.getElementById('tank-hp').innerHTML = tanks[tanks._id].hp;
           document.getElementById('dead').style.display = 'inline-block';          
-          map.scene.remove(tanks[tanks._id].tanker);
           multiplayer.kill(tanks._id);
           setTimeout(function(){
             tanks[tanks._id].hp = 10;
             INITIAL = true;
-            document.getElementById('dead').style.display = 'none';          
-            map.scene.add(tanks[tanks._id].tanker)
+            document.getElementById('dead').style.display = 'none';   
+            tanks[tanks._id].restore();       
           },5000)
         } else if(to !== 'Tower'){
           console.log(from+" hit "+to);
@@ -129,6 +137,7 @@ function updateBullets() {
   }
 }
 
+//Calculate Tank Collision
 function isTankCollide(){
     for (var tankKey in tanks){
     if (tankKey !== "_id" && tankKey !== tanks._id){
@@ -152,6 +161,7 @@ function isTankCollide(){
   }
 }
 
+//Calculate Tower Collision
 function isTowerCollide () {
   var tankCollision = false;
 
@@ -201,12 +211,6 @@ function updateTanks() {
     isTankCollide();
     isTowerCollide();
 
-    if( tanks[tanks._id].direction >= Math.PI ){
-      tanks[tanks._id].direction = -Math.PI;
-    } else if( tanks[tanks._id].direction <= -Math.PI ){
-      tanks[tanks._id].direction = Math.PI;
-    } 
-
     tanks[tanks._id].tanker.rotation.y = -tanks[tanks._id].direction;
 
     tanks[tanks._id].tanker.children[2].rotation.y = -tanks[tanks._id].torretDirection + Math.PI;
@@ -228,22 +232,21 @@ function updatePOV() {
       var dxCam = Math.cos(tanks[tanks._id].cameraDirection)
       var dzCam = Math.sin(tanks[tanks._id].cameraDirection)
 
-      var dx = (tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].torretDirection)*5) - camera.position.x;
+      var dx = (tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].cameraDirection)*5) - camera.position.x;
       var dy = (tanks[tanks._id].tanker.position.y + 2) - camera.position.y;
-      var dz = (tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].torretDirection)*5) - camera.position.z;
+      var dz = (tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].cameraDirection)*5) - camera.position.z;
       var rx = 0 - camera.rotation.x;
-      var ry = (Math.PI/2+tanks[tanks._id].torretDirection) - camera.rotation.y;
+      var ry = (Math.PI/2-tanks[tanks._id].cameraDirection) - camera.rotation.y;
       var rz = 0 - camera.rotation.z;
 
       if(LOCK){
         camera.position.x = tanks[tanks._id].tanker.position.x + dxCam*tanks[tanks._id].x*12;
         camera.position.y = tanks[tanks._id].tanker.position.y + tanks[tanks._id].y * 6;
         camera.position.z = tanks[tanks._id].tanker.position.z + dzCam*tanks[tanks._id].z*12;
-
         camera.rotation.x = 0;
         camera.rotation.y = Math.PI/2-tanks[tanks._id].cameraDirection;
         camera.rotation.z = 0;
-      } else if(Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(dz) < 1){
+      } else if(Math.abs(dx) < 1.2 && Math.abs(dy) < 1.2 && Math.abs(dz) < 1.2){
         LOCK = true;
       } else if(!LOCK){ 
         camera.position.y += dy/20;
@@ -291,7 +294,8 @@ function syncStates() {
         rz: tanks[tanks._id].tanker.rotation.z,
         color:tanks[tanks._id].color,
         id: tanks._id,
-        isDriving: tanks[tanks._id].isDriving
+        isDriving: tanks[tanks._id].isDriving,
+        torretY: tanks[tanks._id].tanker.children[2].rotation.y
       }
     );
   }

@@ -40,5 +40,5 @@ canvas {
 	font-size: 25px;
 	color: white;
 	line-height: 0.5;
-	display: show;
+	display: inline-block;
 }
