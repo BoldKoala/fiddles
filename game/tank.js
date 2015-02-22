@@ -8,9 +8,12 @@ function Tank(attr) {
 	tank.z = attr.z;
 	tank.color = attr.color;
 	tank.speed = attr.speed;
+	tank.acceleration = attr.speed/100;
+	tank.isBraking = true;
 	tank.hp = 10;
 
 	//direction system
+	tank.currentAcc = 0;
 	tank.currentSpeed = 0;
 	tank.spin = 0
 	tank.direction = Math.PI/2;

@@ -100,6 +100,14 @@ function render() {
       INITIAL = false;
     }
     if(tanks[tanks._id].tanker){
+      if(tanks[tanks._id].isBraking){
+        if(Math.abs(tanks[tanks._id].currentSpeed - 0) < 0.01){
+          tanks[tanks._id].currentSpeed = 0;
+          tanks[tanks._id].currentAcc = 0;
+        }
+      }
+      tanks[tanks._id].currentSpeed += tanks[tanks._id].currentAcc;
+
       updateBullets();
       updateTanks();
       updatePOV();
@@ -140,6 +148,7 @@ function updateBullets() {
           document.getElementById('tank-hp').innerHTML = tanks[tanks._id].hp;
         }
       }
+      bulletExplosion(bullet.bulleter.position.x, bullet.bulleter.position.y, bullet.bulleter.position.z);
       map.scene.remove(bullet.bulleter);
     })
   }

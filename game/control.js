@@ -2,22 +2,19 @@ function keyDown(d, tanks, POV) {
 	// console.log(d.keyCode);
   //W key
   if(d.keyCode === 87){
-    if (tanks[tanks._id].currentSpeed < -tanks[tanks._id].speed){
-      tanks[tanks._id].currentSpeed = -tanks[tanks._id].speed
-    } else {
-      tanks[tanks._id].currentSpeed -= 0.005;
+    tanks[tanks._id].currentAcc = -tanks[tanks._id].acceleration;
+    tanks[tanks._id].isBraking = false;
+    if(tanks[tanks._id].currentSpeed < -tanks[tanks._id].speed){
+      tanks[tanks._id].currentAcc = 0;
     }
-    // tanks[tanks._id].currentSpeed = -tanks[tanks._id].speed;
   }
   //S key
   if(d.keyCode === 83){
-    if (tanks[tanks._id].currentSpeed > tanks[tanks._id].speed){
-      tanks[tanks._id].currentSpeed = tanks[tanks._id].speed
-    } else {
-      tanks[tanks._id].currentSpeed += 0.005;
-    }
-    // tanks[tanks._id].currentSpeed = tanks[tanks._id].speed;
-  }
+    tanks[tanks._id].currentAcc = tanks[tanks._id].acceleration;
+    tanks[tanks._id].isBraking = false;
+    if(tanks[tanks._id].currentSpeed > tanks[tanks._id].speed){
+      tanks[tanks._id].currentAcc = 0;
+    }  }
   //D key
   if(d.keyCode === 68){
     tanks[tanks._id].spin = 0.05;
@@ -57,7 +54,6 @@ function keyDown(d, tanks, POV) {
           tanks[tanks._id].tanker.position.y += 0.06
           counter++
         }
-
         if (counter >= 50 && counter < 100){
           tanks[tanks._id].tanker.position.y -= 0.06
           counter++
@@ -70,13 +66,13 @@ function keyDown(d, tanks, POV) {
 function keyUp (d, tanks){
 	//W ke
   if(d.keyCode === 87){
-    tanks[tanks._id].currentSpeed = 0;
-    // tanks[tanks._id].currentSpeed = 0;
+    tanks[tanks._id].isBraking = true;
+    tanks[tanks._id].currentAcc = tanks[tanks._id].acceleration*2;
   }
   //S ke
   if(d.keyCode === 83){
-    tanks[tanks._id].currentSpeed = 0;
-    // tanks[tanks._id].currentSpeed = 0;
+    tanks[tanks._id].isBraking = true;
+    tanks[tanks._id].currentAcc = -tanks[tanks._id].acceleration*2;
   }
   //D key
   if(d.keyCode === 68){
