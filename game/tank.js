@@ -11,6 +11,8 @@ function Tank(attr) {
 	tank.acceleration = attr.speed/100;
 	tank.isBraking = true;
 	tank.hp = 10;
+	tank.isCollide = false;
+	tank.spawn = true;
 
 	//direction system
 	tank.currentAcc = 0;

@@ -114,6 +114,7 @@ function init(){
         updateBullets();
         updateTanks();
         updatePOV();
+        playDriveSound();
         renderer.render(map.scene, camera);
         syncStates();
         updateBulletsFired();
@@ -166,18 +167,31 @@ function init(){
 
   //Calculate Tank Collision
   function isTankCollide(){
-      for (var tankKey in tanks){
+    for (var tankKey in tanks){
       if (tankKey !== "_id" && tankKey !== tanks._id){
-        if (calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]) <= tanks[tanks._id].x * 5){
-          tankCollision = false;
-        } else if (calculateNextDistance(tanks[tanks._id], tanks[tankKey]) < tanks[tanks._id].x * 5.1 && tanks[tankKey].hp > 0){
-          tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-          tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-          tankCollision = true;
+        // if (calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]) <= tanks[tanks._id].x * 5){
+        //   tankCollision = false;
+        // } else if (calculateNextDistance(tanks[tanks._id], tanks[tankKey]) < tanks[tanks._id].x * 5.1 && tanks[tankKey].hp > 0){
+        //   tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+        //   tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+        //   tankCollision = true;
+        // }
+        var dxdz = calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]);
+        if(dxdz < tanks[tanks._id].x * 5.1 && tanks[tankKey].hp > 0){
+          return true;
+        } else {
+          return false;
         }
+      }
+    }
+  }
 
+  function playDriveSound(){
+    for (var tankKey in tanks){
+      if (tankKey !== "_id" && tankKey !== tanks._id){
         var dxdz = calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]);
 
+        //Play sound of other tanks
         tanks[tankKey].driveSound.setVolume(100-((dxdz/50)*100))
         if(tanks[tankKey].isDriving){
           tanks[tankKey].driveSound.loop().play();
@@ -186,60 +200,69 @@ function init(){
         }
       }
     }
-  }
+  };
 
   //Calculate Tower Collision
   function isTowerCollide () {
-    var tankCollision = false;
+    // var tankCollision = false;
 
-    for (var towerKey in towers){
-      if (calculateCurrentTowerDistance(tanks[tanks._id], towers[towerKey]) <= towers[towerKey].collisionSize - 0.17){
-        tankCollision = false;
-      } else if (calculateNextTowerDistance(tanks[tanks._id], towers[towerKey]) < towers[towerKey].collisionSize){
-        tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-        tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-        tankCollision = towers[towerKey];
-      }
-    }
-    if (tankCollision){
-      if (Math.abs(tanks[tanks._id].tanker.position.x - tankCollision.model.position.x) <= Math.abs(tanks[tanks._id].tanker.position.z - tankCollision.model.position.z)) {
-        if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2-tanks[tanks._id].x*5){
-          tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-        }
-        if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2-tanks[tanks._id].z*5){
-          tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
-        }
-      }
-      if (Math.abs(tanks[tanks._id].tanker.position.x - tankCollision.model.position.x) >= Math.abs(tanks[tanks._id].tanker.position.z - tankCollision.model.position.z)){
-        if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2-tanks[tanks._id].x*5){
-          tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-        }
-        if (Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2-tanks[tanks._id].z*5){
-          tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
-        }
-      }
-    } else {
-      if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2-tanks[tanks._id].x*5){
-        tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-      }
-      if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2-tanks[tanks._id].z*5){
-        tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
-      }
-    }
+    // for (var towerKey in towers){
+    //   if (calculateCurrentTowerDistance(tanks[tanks._id], towers[towerKey]) <= towers[towerKey].collisionSize - 0.17){
+    //     tankCollision = false;
+    //   } else if (calculateNextTowerDistance(tanks[tanks._id], towers[towerKey]) < towers[towerKey].collisionSize){
+    //     tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+    //     tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+    //     tankCollision = towers[towerKey];
+    //   }
+    // }
+    // if (tankCollision){
+    //   if (Math.abs(tanks[tanks._id].tanker.position.x - tankCollision.model.position.x) <= Math.abs(tanks[tanks._id].tanker.position.z - tankCollision.model.position.z)) {
+    //     if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2-tanks[tanks._id].x*5){
+    //       tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+    //     }
+    //     if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2-tanks[tanks._id].z*5){
+    //       tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
+    //     }
+    //   }
+    //   if (Math.abs(tanks[tanks._id].tanker.position.x - tankCollision.model.position.x) >= Math.abs(tanks[tanks._id].tanker.position.z - tankCollision.model.position.z)){
+    //     if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2-tanks[tanks._id].x*5){
+    //       tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+    //     }
+    //     if (Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2-tanks[tanks._id].z*5){
+    //       tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
+    //     }
+    //   }
+    // } else {
+    //   if (Math.abs(tanks[tanks._id].tanker.position.x + Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.x/2-tanks[tanks._id].x*5){
+    //     tanks[tanks._id].tanker.position.x += Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+    //   }
+    //   if (!tankCollision && Math.abs(tanks[tanks._id].tanker.position.z + Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed) <= map.y/2-tanks[tanks._id].z*5){
+    //     tanks[tanks._id].tanker.position.z += Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed
+    //   }
+    // }
   }
 
   //Calculate tank movements
   function updateTanks() {
     if(tanks._id){
+      var dx = Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+      var dz = Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
+
+      if(isTankCollide()){
+        tanks[tanks._id].tanker.position.x -= dx;
+        tanks[tanks._id].tanker.position.z -= dz;
+      } else {
+        tanks[tanks._id].tanker.position.x += dx;
+        tanks[tanks._id].tanker.position.z += dz;
+      }
+
       tanks[tanks._id].direction += tanks[tanks._id].spin;
       tanks[tanks._id].torretDirection += tanks[tanks._id].torretY;
       tanks[tanks._id].cameraDirection += tanks[tanks._id].spin+tanks[tanks._id].torretY;
 
-      isTankCollide();
       isTowerCollide();
 
       tanks[tanks._id].tanker.rotation.y = -tanks[tanks._id].direction;
-
       tanks[tanks._id].tanker.children[2].rotation.y = -tanks[tanks._id].torretDirection + Math.PI;
 
       if(tanks[tanks._id].currentSpeed !== 0){
