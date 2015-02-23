@@ -171,9 +171,9 @@ function init(){
         if (calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]) <= tanks[tanks._id].x * 5){
           tankCollision = false;
         } else if (calculateNextDistance(tanks[tanks._id], tanks[tankKey]) < tanks[tanks._id].x * 5.1 && tanks[tankKey].hp > 0){
-          tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-          tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed;
-          tankCollision = true;
+          tanks[tanks._id].tanker.position.x -= Math.cos(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed*1.1;
+          tanks[tanks._id].tanker.position.z -= Math.sin(tanks[tanks._id].direction)*tanks[tanks._id].currentSpeed*1.1;
+          // tankCollision = true;
         }
 
         var dxdz = calculateCurrentDistance(tanks[tanks._id], tanks[tankKey]);
