@@ -8,20 +8,15 @@ function Tank(attr) {
 	tank.z = attr.z;
 	tank.color = attr.color;
 	tank.speed = attr.speed;
-	tank.acceleration = attr.speed/100;
-	tank.isBraking = true;
 	tank.hp = 10;
 	tank.isCollide = false;
-	tank.spawn = true;
 
 	//direction system
-	tank.currentAcc = 0;
 	tank.currentSpeed = 0;
 	tank.spin = 0
 	tank.direction = Math.PI/2;
 
 	//turret system
-	// tank.torretX = 0;
 	tank.torretY = 0;
 	tank.torretDirection = Math.PI/2;
 	tank.cameraDirection = Math.PI/2;
