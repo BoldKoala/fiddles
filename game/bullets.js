@@ -34,7 +34,7 @@ function Bullet(dir1, dir2, speed, position) {
           var dz = Math.abs(tanks[tank].tanker.position.z - this.bulleter.position.z) - (tanks[tank].x*5)/2.5;
           if(dx < tanks[tank].x && dy < tanks[tank].y && dz < tanks[tank].z && !this.isHit){
             this.isHit = true;
-            bulletExplosion(this.bulleter.position.x, this.bulleter.position.y, this.bulleter.position.z);
+            // bulletExplosion(this.bulleter.position.x, this.bulleter.position.y, this.bulleter.position.z);
             cb(this._id, tank, this);
           }
         }
@@ -45,12 +45,50 @@ function Bullet(dir1, dir2, speed, position) {
         var dz = Math.abs(towers[towerKey].model.position.z - this.bulleter.position.z);
         if(dx < towers[towerKey].collisionSize/1.9 && dy < towers[towerKey].collisionSize/1.9 && dz < towers[towerKey].collisionSize/1.9 && !this.hitTower){
           this.hitTower = true;
-          bulletExplosion(this.bulleter.position.x, this.bulleter.position.y, this.bulleter.position.z);
+          // bulletExplosion(this.bulleter.position.x, this.bulleter.position.y, this.bulleter.position.z);
           cb(this._id, 'Tower', this);
         }
       }
-
     }
+  }
+
+  bullet.explosion = function(callback){
+    var cubes = [];
+    var cubeGeometry = new THREE.BoxGeometry( 0.025, 0.025, 0.025 )
+    var cubeMaterial = new THREE.MeshBasicMaterial({
+        color: "orange"
+    });
+    
+    for (var i = 0; i < 50; i++){
+      var cube = {};
+      cube.spark = new THREE.Mesh(cubeGeometry, cubeMaterial);
+      cube.spark.position.x = this.bulleter.position.x;
+      cube.spark.position.y = this.bulleter.position.y;
+      cube.spark.position.z = this.bulleter.position.z;
+      cube.move = function(intv,time, callback){
+        var randomDirection = {
+          dx : (2 * Math.random() - 1)/4,
+          dy : (2 * Math.random() - 1)/4,
+          dz : (2 * Math.random() - 1)/4
+        }
+        var ctx = this;
+        var moving = setInterval(function(){
+          ctx.spark.position.x += randomDirection.dx;
+          ctx.spark.position.y += randomDirection.dy;
+          ctx.spark.position.z += randomDirection.dz;
+        },intv);
+
+        setTimeout(function(){
+          clearInterval(moving);
+          callback(ctx);
+        }, time)
+      };
+
+      callback(cube);
+
+      cubes.push(cube);
+    }
+    return cubes;
   }
 
   return bullet;
