@@ -26,31 +26,21 @@ function Map(x, y, step, brightness) {
 	map.scene.add(map.floor);
 
 	// ====== Wall building ========
-	
-	map.wall1 = new THREE.Mesh(new THREE.BoxGeometry(1,5,61), map.material.wall);
-	map.wall2 = new THREE.Mesh(new THREE.BoxGeometry(1,5,61), map.material.wall);
-	map.wall3 = new THREE.Mesh(new THREE.BoxGeometry(61,5,1), map.material.wall);
-	map.wall4 = new THREE.Mesh(new THREE.BoxGeometry(61,5,1), map.material.wall);
-	map.wall1.receiveShadow = true;
-	map.wall2.receiveShadow = true;
-	map.wall3.receiveShadow = true;
-	map.wall4.receiveShadow = true;
-	map.wall1.castShadow = true;
-	map.wall2.castShadow = true;
-	map.wall3.castShadow = true;
-	map.wall4.castShadow = true;
-	map.wall1.position.x += map.x/2;
-	map.wall2.position.x -= map.x/2;
-	map.wall3.position.z += map.y/2;
-	map.wall4.position.z -= map.y/2;
-	map.wall1.position.y += 0.5;
-	map.wall2.position.y += 0.5;
-	map.wall3.position.y += 0.5;
-	map.wall4.position.y += 0.5;
-	map.scene.add(map.wall1);
-	map.scene.add(map.wall2);
-	map.scene.add(map.wall3);
-	map.scene.add(map.wall4);
+	map.walls = [
+	{x:1,y:5,z:61, positionX: map.x/2, positionZ: 0},
+	{x:1,y:5,z:61, positionX: -map.x/2, positionZ: 0},
+	{x:61,y:5,z:1, positionX: 0, positionZ: map.y/2},
+	{x:61,y:5,z:1, positionX: 0, positionZ: -map.y/2}]
+
+	for(var i = 0; i<map.walls.length; i++){
+		var wall = new THREE.Mesh(new THREE.BoxGeometry(map.walls[i].x,map.walls[i].y,map.walls[i].z), map.material.wall);
+		wall.receiveShadow = true;
+		wall.castShadow = true;
+		wall.position.x = map.walls[i].positionX;
+		wall.position.z = map.walls[i].positionZ;
+		wall.position.y = 0.5;
+		map.scene.add(wall);
+	}
 
 	// ====== Sky building ========
 	map.sky = new THREE.Mesh(new THREE.SphereGeometry(100,32,32), map.material.sky);
