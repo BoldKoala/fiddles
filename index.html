@@ -2,12 +2,31 @@
 <html>
   <head>
     <title>Test1</title>
+    <!--
     <link rel="stylesheet" type="text/css" href="./style/style.css">
+    -->
 
 
   </head>
 
   <body>
+  We have a new page! <br>
+  You are being redirected to Tankerooski in <span id='count'>5</span> seconds.....<br>
+  or click <a href='https://tankerooski.herokuapp.com'>here</a> to login and join the fight!<br>
+
+  <script>
+  setTimeout(function(){
+    window.location.replace("http://tankerooski.herokuapp.com");
+  },5000)
+
+  var count = 5;
+
+  setInterval(function(){
+    document.getElementById('count').innerHTML = --count;
+  },1000)
+  </script>
+
+  <!--
     <div id='hp'>
       <div id='tank-color'></div>
       HP: <span id='tank-hp'></span>
@@ -35,6 +54,7 @@
     <script type="text/javascript" src="./Game/Setting/multiplayer.js"></script>
     <script type="text/javascript" src="./Game/Setting/control.js"></script>
     <script type="text/javascript" src="./Game/game.js"></script>
+  -->
 
   </body>
 
